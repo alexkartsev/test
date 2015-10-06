@@ -54,10 +54,12 @@
             [self.detailItem setValue:self.contentTextView.text forKey:@"content"];
             NSError *error;
             [self.managedObjectContext save:&error];
+            [self.navigationController.navigationController popViewControllerAnimated:YES];
+            
             //[self.navigationController popToRootViewControllerAnimated:YES];
-            UIViewController *prevVC = [self.navigationController.viewControllers objectAtIndex:0];
-            [self.navigationController popToViewController:prevVC animated:YES];
-            [self dismissViewControllerAnimated:YES completion:nil];
+            //UIViewController *prevVC = [self.navigationController.viewControllers objectAtIndex:0];
+            //[self.navigationController popToViewController:prevVC animated:YES];
+            //[self dismissViewControllerAnimated:YES completion:nil];
         }
         else
         {

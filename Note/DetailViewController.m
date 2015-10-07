@@ -12,7 +12,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 @property (weak, nonatomic) IBOutlet UITextView *contentTextView;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
-
+@property (strong, nonatomic) UIAlertController *alertEditImageController;
+@property (strong, nonatomic) UIAlertController *alertAddingImageController;
 @end
 
 @implementation DetailViewController
@@ -20,15 +21,86 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configureView];
-    
+    [self.imageView setUserInteractionEnabled:YES];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(myTapImageMethod)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [self.imageView addGestureRecognizer:tap];
     UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveButton)];
     UIBarButtonItem *addImageButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addImageButton)];
     [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:saveButton, addImageButton, nil]];
-//    self.navigationItem.rightBarButtonItem = [NSArray arrayWithObjects:addImageButton, saveButton, nil];
     self.contentTextView.layer.borderWidth = 1.0f;
     self.contentTextView.layer.borderColor = [[UIColor grayColor] CGColor];
     UITapGestureRecognizer *touch = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchEndEditing)];
     [self.view addGestureRecognizer:touch];
+    self.alertEditImageController = [UIAlertController
+                                          alertControllerWithTitle:@"Please"
+                                          message:@"Delete or edit image"
+                                          preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *deleteAction = [UIAlertAction
+                                 actionWithTitle:@"Delete"
+                                 style:UIAlertActionStyleDestructive
+                                 handler:^(UIAlertAction * action)
+                                 {
+                                     self.imageView.image=nil;
+                                     [self.alertEditImageController dismissViewControllerAnimated:YES completion:nil];
+                                 }];
+    UIAlertAction* cancel = [UIAlertAction
+                             actionWithTitle:@"Cancel"
+                             style:UIAlertActionStyleCancel
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [self.alertEditImageController dismissViewControllerAnimated:YES completion:nil];
+                             }];
+    
+    self.alertAddingImageController = [UIAlertController
+                                     alertControllerWithTitle:@"Please"
+                                     message:@"Choose the resource for import Photo"
+                                     preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *fromGalleryAction = [UIAlertAction
+                                 actionWithTitle:@"Import from Gallery"
+                                 style:UIAlertActionStyleDefault
+                                 handler:^(UIAlertAction * action)
+                                 {
+                                     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+                                     picker.delegate = self;
+                                     picker.allowsEditing = YES;
+                                     picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                                     [self presentViewController:picker animated:YES completion:NULL];
+                                 }];
+    UIAlertAction *fromCameraAction = [UIAlertAction
+                                   actionWithTitle:@"Import from Camera"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action)
+                                   {
+                                       UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+                                       picker.delegate = self;
+                                       picker.allowsEditing = YES;
+                                       picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+                                       [self presentViewController:picker animated:YES completion:NULL];
+                                   }];
+    UIAlertAction* cancelAddingImage = [UIAlertAction
+                             actionWithTitle:@"Cancel"
+                             style:UIAlertActionStyleCancel
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [self.alertAddingImageController dismissViewControllerAnimated:YES completion:nil];
+                             }];
+    
+    [self.alertAddingImageController addAction:fromGalleryAction];
+    [self.alertAddingImageController addAction:fromCameraAction];
+    [self.alertAddingImageController addAction:cancelAddingImage];
+    
+    [self.alertEditImageController addAction:fromGalleryAction];
+    [self.alertEditImageController addAction:fromCameraAction];
+    [self.alertEditImageController addAction:deleteAction];
+    [self.alertEditImageController addAction:cancel];
+    
+}
+
+- (void) myTapImageMethod
+{
+    [self presentViewController:self.alertEditImageController animated:YES completion:nil];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
@@ -43,11 +115,7 @@
 
 - (void) addImageButton
 {
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.delegate = self;
-    picker.allowsEditing = YES;
-    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    [self presentViewController:picker animated:YES completion:NULL];
+    [self presentViewController:self.alertAddingImageController animated:YES completion:nil];
 }
 
 - (void) touchEndEditing{
@@ -73,16 +141,12 @@
     {
         if (self.detailItem)
         {
-            if (!([[self.detailItem valueForKey:@"title"] isEqualToString:self.titleTextField.text]) || !([[self.detailItem valueForKey:@"content"] isEqualToString:self.contentTextView.text])) {
                 [self.detailItem setValue:self.titleTextField.text forKey:@"title"];
                 [self.detailItem setValue:self.contentTextView.text forKey:@"content"];
+                NSData *imageData = UIImagePNGRepresentation(self.imageView.image);
+                [self.detailItem setValue:imageData forKey:@"image"];
                 [[DataManager sharedManager] asyncSavingOfNSManagedObject:self.detailItem];
                 [self.navigationController.navigationController popViewControllerAnimated:YES];
-            }
-            else
-            {
-                [self.navigationController.navigationController popViewControllerAnimated:YES];
-            }
         }
         else
         {
@@ -111,7 +175,6 @@
         self.titleTextField.text = [[self.detailItem valueForKey:@"title"] description];
         self.contentTextView.text = [[self.detailItem valueForKey:@"content"] description];
         self.imageView.image = [UIImage imageWithData:[self.detailItem valueForKey:@"image"]];
-//        self.imageView.image = [UIImage imageWithData:[[self.detailItem valueForKey:@"image"] description]];
     }
 }
 

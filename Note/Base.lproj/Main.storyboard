@@ -62,23 +62,33 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ulJ-1B-5U8">
-                                <rect key="frame" x="20" y="230" width="560" height="350"/>
+                                <rect key="frame" x="20" y="230" width="560" height="142"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="esR-hi-1Sf">
+                                <rect key="frame" x="180" y="395" width="240" height="197"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="FSl-iU-ypk"/>
+                                    <constraint firstAttribute="height" constant="197" id="e9W-KD-b7c"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="ulJ-1B-5U8" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leadingMargin" id="NGI-GG-vyg"/>
                             <constraint firstItem="GJC-2M-cxb" firstAttribute="centerX" secondItem="svH-Pt-448" secondAttribute="centerX" id="Nq2-YG-eG8"/>
-                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="ulJ-1B-5U8" secondAttribute="bottom" constant="20" id="Nxn-fX-wOf"/>
+                            <constraint firstItem="esR-hi-1Sf" firstAttribute="top" secondItem="ulJ-1B-5U8" secondAttribute="bottom" constant="23" id="OL2-1B-Yaa"/>
                             <constraint firstItem="ulJ-1B-5U8" firstAttribute="trailing" secondItem="svH-Pt-448" secondAttribute="trailingMargin" id="PIP-t7-YsB"/>
                             <constraint firstItem="8vx-6b-i5I" firstAttribute="top" secondItem="GJC-2M-cxb" secondAttribute="bottom" constant="21" id="SGa-Uy-NuN"/>
                             <constraint firstItem="8vx-6b-i5I" firstAttribute="trailing" secondItem="svH-Pt-448" secondAttribute="trailingMargin" id="WHx-zk-5jS"/>
                             <constraint firstItem="8vx-6b-i5I" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leadingMargin" id="ay5-iC-zLQ"/>
                             <constraint firstItem="ulJ-1B-5U8" firstAttribute="top" secondItem="fbe-oc-D0x" secondAttribute="bottom" constant="30" id="k9w-FP-BQh"/>
+                            <constraint firstItem="esR-hi-1Sf" firstAttribute="centerX" secondItem="svH-Pt-448" secondAttribute="centerX" id="osx-c7-mhE"/>
+                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="esR-hi-1Sf" secondAttribute="bottom" constant="8" id="qSO-4O-5bB"/>
                             <constraint firstItem="fbe-oc-D0x" firstAttribute="centerX" secondItem="svH-Pt-448" secondAttribute="centerX" id="wd2-th-H7E"/>
                             <constraint firstItem="GJC-2M-cxb" firstAttribute="top" secondItem="SYR-Wa-9uf" secondAttribute="bottom" constant="24" id="xCW-hX-58v"/>
                             <constraint firstItem="fbe-oc-D0x" firstAttribute="top" secondItem="8vx-6b-i5I" secondAttribute="bottom" constant="19" id="zo5-hM-itF"/>
@@ -88,6 +98,7 @@
                     <navigationItem key="navigationItem" title="Add new note" id="mOI-FS-AaM"/>
                     <connections>
                         <outlet property="contentTextView" destination="ulJ-1B-5U8" id="D9g-dm-s85"/>
+                        <outlet property="imageView" destination="esR-hi-1Sf" id="ENb-bU-bDU"/>
                         <outlet property="titleTextField" destination="8vx-6b-i5I" id="v3F-1R-17Y"/>
                     </connections>
                 </viewController>

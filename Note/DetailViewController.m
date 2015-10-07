@@ -11,6 +11,7 @@
 @interface DetailViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 @property (weak, nonatomic) IBOutlet UITextView *contentTextView;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @end
 
@@ -21,11 +22,32 @@
     [self configureView];
     
     UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveButton)];
-    self.navigationItem.rightBarButtonItem = saveButton;
+    UIBarButtonItem *addImageButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addImageButton)];
+    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:saveButton, addImageButton, nil]];
+//    self.navigationItem.rightBarButtonItem = [NSArray arrayWithObjects:addImageButton, saveButton, nil];
     self.contentTextView.layer.borderWidth = 1.0f;
     self.contentTextView.layer.borderColor = [[UIColor grayColor] CGColor];
     UITapGestureRecognizer *touch = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchEndEditing)];
     [self.view addGestureRecognizer:touch];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *selectedImage = info[UIImagePickerControllerEditedImage];
+    self.imageView.image = selectedImage;
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void) addImageButton
+{
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    [self presentViewController:picker animated:YES completion:NULL];
 }
 
 - (void) touchEndEditing{
@@ -64,7 +86,8 @@
         }
         else
         {
-            [[DataManager sharedManager] addNewObjectToContextWithTitle:self.titleTextField.text withContent:self.contentTextView.text];
+            NSData *imageData = UIImagePNGRepresentation(self.imageView.image);
+            [[DataManager sharedManager] addNewObjectToContextWithTitle:self.titleTextField.text withContent:self.contentTextView.text withImage:imageData];
             [self.navigationController.navigationController popViewControllerAnimated:YES];
             self.titleTextField.text=nil;
             self.contentTextView.text = nil;
@@ -87,6 +110,8 @@
     if (self.detailItem) {
         self.titleTextField.text = [[self.detailItem valueForKey:@"title"] description];
         self.contentTextView.text = [[self.detailItem valueForKey:@"content"] description];
+        self.imageView.image = [UIImage imageWithData:[self.detailItem valueForKey:@"image"]];
+//        self.imageView.image = [UIImage imageWithData:[[self.detailItem valueForKey:@"image"] description]];
     }
 }
 

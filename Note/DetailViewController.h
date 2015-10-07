@@ -10,7 +10,10 @@
 #import <CoreData/CoreData.h>
 #import "DataManager.h"
 
-@interface DetailViewController : UIViewController
+@interface DetailViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+{
+    
+}
 
 @property (strong, nonatomic) id detailItem;
 

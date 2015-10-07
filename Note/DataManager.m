@@ -84,7 +84,7 @@
     
 }
 
--(void)addNewObjectToContextWithTitle:(NSString *)title withContent:(NSString *)content
+-(void)addNewObjectToContextWithTitle:(NSString *)title withContent:(NSString *)content withImage:(NSData *) image
 {
     NSManagedObject *newNote;
     newNote = [NSEntityDescription
@@ -93,6 +93,7 @@
     [newNote setValue:title forKey:@"title"];
     [newNote setValue:content forKey:@"content"];
     [newNote setValue:[NSDate date] forKey:@"date"];
+    [newNote setValue:image forKey:@"image"];
     [self asyncSavingOfNSManagedObject:newNote];
 }
 

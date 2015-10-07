@@ -25,7 +25,9 @@ typedef NS_ENUM(NSInteger, UYLWorldFactsSearchScope)
 + (DataManager*)sharedManager;
 - (void)saveContext;
 - (void)asyncSavingOfNSManagedObject: (NSManagedObject *) aObject;
-- (void)addNewObjectToContextWithTitle:(NSString *)title withContent:(NSString *)content;
+-(void)addNewObjectToContextWithTitle:(NSString *)title
+                          withContent:(NSString *)content
+                            withImage:(NSData *) image;
 - (NSArray *)searchForText:(NSString *)searchText scope:(UYLWorldFactsSearchScope)scopeOption;
 
 @end

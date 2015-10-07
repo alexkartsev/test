@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11797E231BC523C300990876 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11797E221BC523C300990876 /* DataManager.m */; settings = {ASSET_TAGS = (); }; };
 		117A2A961BC3AA40001421F1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 117A2A951BC3AA40001421F1 /* main.m */; };
 		117A2A991BC3AA40001421F1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 117A2A981BC3AA40001421F1 /* AppDelegate.m */; };
 		117A2A9C1BC3AA40001421F1 /* Note.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 117A2A9A1BC3AA40001421F1 /* Note.xcdatamodeld */; };
@@ -38,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		11797E211BC523C300990876 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
+		11797E221BC523C300990876 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		117A2A911BC3AA40001421F1 /* Note.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Note.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		117A2A951BC3AA40001421F1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		117A2A971BC3AA40001421F1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -119,6 +122,8 @@
 				117A2A9E1BC3AA40001421F1 /* MasterViewController.m */,
 				117A2AA01BC3AA40001421F1 /* DetailViewController.h */,
 				117A2AA11BC3AA40001421F1 /* DetailViewController.m */,
+				11797E211BC523C300990876 /* DataManager.h */,
+				11797E221BC523C300990876 /* DataManager.m */,
 				117A2AA31BC3AA40001421F1 /* Main.storyboard */,
 				117A2AA61BC3AA40001421F1 /* Assets.xcassets */,
 				117A2AA81BC3AA40001421F1 /* LaunchScreen.storyboard */,
@@ -338,6 +343,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				117A2AA21BC3AA40001421F1 /* DetailViewController.m in Sources */,
+				11797E231BC523C300990876 /* DataManager.m in Sources */,
 				117A2A9F1BC3AA40001421F1 /* MasterViewController.m in Sources */,
 				117A2A9C1BC3AA40001421F1 /* Note.xcdatamodeld in Sources */,
 				117A2A991BC3AA40001421F1 /* AppDelegate.m in Sources */,

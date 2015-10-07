@@ -12,14 +12,7 @@
 @interface MasterViewController () <NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating>
 
 @property (strong, nonatomic) UISearchController *searchController;
-@property (strong, nonatomic) NSFetchRequest *searchFetchRequest;
 @property (strong, nonatomic) NSArray *filteredList;
-
-typedef NS_ENUM(NSInteger, UYLWorldFactsSearchScope)
-{
-    searchScopeTitle = 0,
-    searchScopeContent = 1
-};
 
 @end
 
@@ -29,12 +22,7 @@ typedef NS_ENUM(NSInteger, UYLWorldFactsSearchScope)
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didChangePreferredContentSize:)
-                                                 name:UIContentSizeCategoryDidChangeNotification object:nil];
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
-    self.navigationItem.rightBarButtonItem = addButton;
-//    self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
+    self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     self.searchController.searchResultsUpdater = self;
@@ -47,53 +35,50 @@ typedef NS_ENUM(NSInteger, UYLWorldFactsSearchScope)
     [self.searchController.searchBar sizeToFit];
 }
 
-- (void)didChangePreferredContentSize:(NSNotification *)notification
-{
-    [self.tableView reloadData];
+- (void)viewWillAppear:(BOOL)animated {
+    self.clearsSelectionOnViewWillAppear = self.splitViewController.isCollapsed;
+    [super viewWillAppear:animated];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
-{
-    if (!self.searchController.active)
-    {
-        if (index > 0)
-        {
-            // The index is offset by one to allow for the extra search icon inserted at the front
-            // of the index
-            
-            return [self.fetchedResultsController sectionForSectionIndexTitle:title atIndex:index-1];
-        }
-        else
-        {
-            // The first entry in the index is for the search icon so we return section not found
-            // and force the table to scroll to the top.
-            
-            CGRect searchBarFrame = self.searchController.searchBar.frame;
-            [self.tableView scrollRectToVisible:searchBarFrame animated:NO];
-            return NSNotFound;
-        }
-    }
-    return 0;
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
-//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-//{
-//    if (!self.searchController.active)
-//    {
-//        NSMutableArray *index = [NSMutableArray arrayWithObject:UITableViewIndexSearch];
-//        NSArray *initials = [self.fetchedResultsController sectionIndexTitles];
-//        [index addObjectsFromArray:initials];
-//        return index;
-//    }
-//    return nil;
-//}
+#pragma mark - Search Methods
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
     NSString *searchString = searchController.searchBar.text;
-    [self searchForText:searchString scope:searchController.searchBar.selectedScopeButtonIndex];
+    self.filteredList = [[NSArray alloc] initWithArray:[[DataManager sharedManager] searchForText:searchString scope:searchController.searchBar.selectedScopeButtonIndex]];
     [self.tableView reloadData];
 }
+
+- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
+{
+    [self updateSearchResultsForSearchController:self.searchController];
+}
+
+
+#pragma mark - Segues
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"showDetail"]) {
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+        DetailViewController *controller = (DetailViewController *)[[segue destinationViewController] topViewController];
+        [controller setDetailItem:object];
+        controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+        controller.navigationItem.leftItemsSupplementBackButton = YES;
+    } else if ([[segue identifier] isEqualToString:@"addingNewItem"])
+    {
+        DetailViewController *controller = (DetailViewController *)[[segue destinationViewController] topViewController];
+        controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+        controller.navigationItem.leftItemsSupplementBackButton = YES;
+    }
+}
+
+#pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -106,97 +91,6 @@ typedef NS_ENUM(NSInteger, UYLWorldFactsSearchScope)
         return [[self.fetchedResultsController sections] count];
     }
 }
-
-- (void)searchForText:(NSString *)searchText scope:(UYLWorldFactsSearchScope)scopeOption
-{
-    if (self.managedObjectContext)
-    {
-        NSString *predicateFormat = @"%K contains[c] %@";
-        NSString *searchAttribute = @"title";
-        
-        if (scopeOption == searchScopeContent)
-        {
-            searchAttribute = @"content";
-        }
-        
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateFormat, searchAttribute, searchText];
-        [self.searchFetchRequest setPredicate:predicate];
-        
-        NSError *error = nil;
-        self.filteredList = [self.managedObjectContext executeFetchRequest:self.searchFetchRequest error:&error];
-        if (error)
-        {
-            NSLog(@"searchFetchRequest failed: %@",[error localizedDescription]);
-        }
-    }
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    if (!self.searchController.active)
-    {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-        return [sectionInfo name];
-    }
-    return nil;
-}
-
-- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
-{
-    [self updateSearchResultsForSearchController:self.searchController];
-}
-
-- (NSFetchRequest *)searchFetchRequest
-{
-    if (_searchFetchRequest != nil)
-    {
-        return _searchFetchRequest;
-    }
-    
-    _searchFetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
-    [_searchFetchRequest setEntity:entity];
-    
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
-    NSArray *sortDescriptors = [NSArray arrayWithObjects:sortDescriptor, nil];
-    [_searchFetchRequest setSortDescriptors:sortDescriptors];
-    
-    return _searchFetchRequest;
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    self.clearsSelectionOnViewWillAppear = self.splitViewController.isCollapsed;
-    [super viewWillAppear:animated];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)insertNewObject:(id)sender {
-
-    DetailViewController *detailView = [self.storyboard instantiateViewControllerWithIdentifier:@"detailViewController"];
-    detailView.managedObjectContext = self.managedObjectContext;
-    [self.navigationController pushViewController:detailView animated:YES];
-}
-
-#pragma mark - Segues
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@"showDetail"]) {
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-        DetailViewController *controller = (DetailViewController *)[[segue destinationViewController] topViewController];
-        controller.managedObjectContext = self.managedObjectContext;
-        [controller setDetailItem:object];
-        controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-        controller.navigationItem.leftItemsSupplementBackButton = YES;
-    }
-}
-
-#pragma mark - Table View
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -238,13 +132,6 @@ typedef NS_ENUM(NSInteger, UYLWorldFactsSearchScope)
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-//    NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//    cell.textLabel.text = [[object valueForKey:@"title"] description];
-//    cell.detailTextLabel.text = [[object valueForKey:@"content"] description];
-//    
-//    CountryCell *cell = [self.tableView dequeueReusableCellWithIdentifier:UYLCountryCellIdentifier forIndexPath:indexPath];
-//    
-//    Country *country = nil;
     NSManagedObject *object;
     if (self.searchController.active)
     {
@@ -269,11 +156,8 @@ typedef NS_ENUM(NSInteger, UYLWorldFactsSearchScope)
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:[[DataManager sharedManager] managedObjectContext]];
     [fetchRequest setEntity:entity];
-    
-    // Set the batch size to a suitable number.
-//    [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
@@ -281,7 +165,7 @@ typedef NS_ENUM(NSInteger, UYLWorldFactsSearchScope)
     
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Master"];
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:[[DataManager sharedManager] managedObjectContext] sectionNameKeyPath:nil cacheName:@"Master"];
     aFetchedResultsController.delegate = self;
     self.fetchedResultsController = aFetchedResultsController;
     

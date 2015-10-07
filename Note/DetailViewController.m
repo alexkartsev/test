@@ -29,7 +29,7 @@
 }
 
 - (void) touchEndEditing{
-            [self.view endEditing:YES];
+    [self.view endEditing:YES];
 }
 
 - (void) showAlertViewWithMessage:(NSString *) message
@@ -41,6 +41,7 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+
 -(void) saveButton
 {
     if (self.titleTextField.text.length==0 || self.contentTextView.text.length==0) {
@@ -50,29 +51,23 @@
     {
         if (self.detailItem)
         {
-            [self.detailItem setValue:self.titleTextField.text forKey:@"title"];
-            [self.detailItem setValue:self.contentTextView.text forKey:@"content"];
-            NSError *error;
-            [self.managedObjectContext save:&error];
-            [self.navigationController.navigationController popViewControllerAnimated:YES];
-            
-            //[self.navigationController popToRootViewControllerAnimated:YES];
-            //UIViewController *prevVC = [self.navigationController.viewControllers objectAtIndex:0];
-            //[self.navigationController popToViewController:prevVC animated:YES];
-            //[self dismissViewControllerAnimated:YES completion:nil];
+            if (!([[self.detailItem valueForKey:@"title"] isEqualToString:self.titleTextField.text]) || !([[self.detailItem valueForKey:@"content"] isEqualToString:self.contentTextView.text])) {
+                [self.detailItem setValue:self.titleTextField.text forKey:@"title"];
+                [self.detailItem setValue:self.contentTextView.text forKey:@"content"];
+                [[DataManager sharedManager] asyncSavingOfNSManagedObject:self.detailItem];
+                [self.navigationController.navigationController popViewControllerAnimated:YES];
+            }
+            else
+            {
+                [self.navigationController.navigationController popViewControllerAnimated:YES];
+            }
         }
         else
         {
-            NSManagedObject *newNote;
-            newNote = [NSEntityDescription
-                       insertNewObjectForEntityForName:@"Event"
-                       inManagedObjectContext:self.managedObjectContext];
-            [newNote setValue:self.titleTextField.text forKey:@"title"];
-            [newNote setValue:self.contentTextView.text forKey:@"content"];
-            [newNote setValue:[NSDate date] forKey:@"date"];
-            NSError *error;
-            [self.managedObjectContext save:&error];
-            [self.navigationController popViewControllerAnimated:YES];
+            [[DataManager sharedManager] addNewObjectToContextWithTitle:self.titleTextField.text withContent:self.contentTextView.text];
+            [self.navigationController.navigationController popViewControllerAnimated:YES];
+            self.titleTextField.text=nil;
+            self.contentTextView.text = nil;
         }
     }
 }
@@ -82,7 +77,6 @@
 - (void)setDetailItem:(id)newDetailItem {
     if (_detailItem != newDetailItem) {
         _detailItem = newDetailItem;
-            
         // Update the view.
         [self configureView];
     }

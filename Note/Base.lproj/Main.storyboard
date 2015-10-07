@@ -85,7 +85,7 @@
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Detail" id="mOI-FS-AaM"/>
+                    <navigationItem key="navigationItem" title="Add new note" id="mOI-FS-AaM"/>
                     <connections>
                         <outlet property="contentTextView" destination="ulJ-1B-5U8" id="D9g-dm-s85"/>
                         <outlet property="titleTextField" destination="8vx-6b-i5I" id="v3F-1R-17Y"/>
@@ -158,7 +158,13 @@
                             <outlet property="delegate" destination="7bK-jq-Zjz" id="RA6-mI-bju"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Master" id="Zdf-7t-Un8"/>
+                    <navigationItem key="navigationItem" title="Notes" id="Zdf-7t-Un8">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="yqU-Ax-cMz">
+                            <connections>
+                                <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="addingNewItem" id="M5H-wW-eRM"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rux-fX-hf1" sceneMemberID="firstResponder"/>
             </objects>
@@ -182,6 +188,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="6S0-TO-JiA"/>
+        <segue reference="M5H-wW-eRM"/>
     </inferredMetricsTieBreakers>
 </document>

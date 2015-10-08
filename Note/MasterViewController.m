@@ -128,6 +128,10 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
         [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
+        NSString *newDate = [dateFormatter stringFromDate:[[self.fetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"date"]];
+        [[DataManager sharedManager] deleteImageFromDocumentsWithName:newDate];
         NSError *error = nil;
         if (![context save:&error]) {
             // Replace this implementation with code to handle the error appropriately.

@@ -26,7 +26,7 @@ typedef NS_ENUM(NSInteger, UYLWorldFactsSearchScope)
 
 - (void)saveContext;
 
-- (void) asyncSavingOfNSManagedObject: (NSManagedObject *) aObject
+- (void)asyncSavingOfNSManagedObject: (NSManagedObject *) aObject
                             withImage: (NSData *)image
                              withName: (NSString *) imageName;
 
@@ -37,5 +37,7 @@ typedef NS_ENUM(NSInteger, UYLWorldFactsSearchScope)
 - (NSArray *)searchForText:(NSString *)searchText scope:(UYLWorldFactsSearchScope)scopeOption;
 
 - (NSData *)getImageFromDocumentsWithName: (NSString *) imageName;
+
+- (void)deleteImageFromDocumentsWithName:(NSString *)imageName;
 
 @end

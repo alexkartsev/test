@@ -123,6 +123,13 @@
     return pngData;
 }
 
+- (void)deleteImageFromDocumentsWithName:(NSString *)imageName
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
+    [fileManager removeItemAtPath:[self documentsPathForFileName:imageName] error:&error];
+}
+
 #pragma mark - Search Methods
 
 - (NSArray *)searchForText:(NSString *)searchText scope:(UYLWorldFactsSearchScope)scopeOption

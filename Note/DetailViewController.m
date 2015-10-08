@@ -18,6 +18,8 @@
 
 @implementation DetailViewController
 
+bool imageWasChanged;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configureView];
@@ -44,8 +46,13 @@
                                  handler:^(UIAlertAction * action)
                                  {
                                      self.imageView.image=nil;
+                                     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                                     [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
+                                     NSString *newDate = [dateFormatter stringFromDate:[self.detailItem valueForKey:@"date"]];
+                                     [[DataManager sharedManager] deleteImageFromDocumentsWithName:newDate];
                                      [self.alertEditImageController dismissViewControllerAnimated:YES completion:nil];
                                  }];
+    
     UIAlertAction* cancel = [UIAlertAction
                              actionWithTitle:@"Cancel"
                              style:UIAlertActionStyleCancel
@@ -116,7 +123,10 @@
 
 - (void) myTapImageMethod
 {
-    [self presentViewController:self.alertEditImageController animated:YES completion:nil];
+    if (self.imageView.image)
+    {
+        [self presentViewController:self.alertEditImageController animated:YES completion:nil];
+    }
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {

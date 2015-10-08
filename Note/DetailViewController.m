@@ -160,8 +160,10 @@
                 [self.detailItem setValue:self.titleTextField.text forKey:@"title"];
                 [self.detailItem setValue:self.contentTextView.text forKey:@"content"];
                 NSData *imageData = UIImagePNGRepresentation(self.imageView.image);
-                [self.detailItem setValue:imageData forKey:@"image"];
-                [[DataManager sharedManager] asyncSavingOfNSManagedObject:self.detailItem];
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
+                NSString *newDate = [dateFormatter stringFromDate:[self.detailItem valueForKey:@"date"]];
+                [[DataManager sharedManager] asyncSavingOfNSManagedObject:self.detailItem withImage:imageData withName:newDate];
                 [self.navigationController.navigationController popViewControllerAnimated:YES];
         }
         else
@@ -190,7 +192,10 @@
     if (self.detailItem) {
         self.titleTextField.text = [[self.detailItem valueForKey:@"title"] description];
         self.contentTextView.text = [[self.detailItem valueForKey:@"content"] description];
-        self.imageView.image = [UIImage imageWithData:[self.detailItem valueForKey:@"image"]];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
+        NSString *newDate = [dateFormatter stringFromDate:[self.detailItem valueForKey:@"date"]];
+        self.imageView.image = [UIImage imageWithData:[[DataManager sharedManager] getImageFromDocumentsWithName:newDate]];
     }
 }
 

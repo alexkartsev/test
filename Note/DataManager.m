@@ -57,8 +57,10 @@
     return self;
 }
 
-- (void) asyncSavingOfNSManagedObject: (NSManagedObject *) aObject{
-    
+- (void) asyncSavingOfNSManagedObject: (NSManagedObject *) aObject
+                            withImage: (NSData *)image
+                             withName: (NSString *) imageName
+{
     NSError *error = nil;
     __block NSError *parentError = nil;
     
@@ -70,6 +72,10 @@
         [self.managedObjectContext performBlock:^{
             
             [self.managedObjectContext save:&parentError];
+            
+            if (image) {
+                [image writeToFile:[self documentsPathForFileName:imageName] atomically:YES];
+            }
             
             if(parentError){
                 
@@ -84,6 +90,15 @@
     
 }
 
+- (NSString *)documentsPathForFileName:(NSString *)name
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+    NSString *documentsPath = [paths objectAtIndex:0];
+    NSString *newName = [NSString stringWithFormat:@"%@.png",name];
+
+    return [documentsPath stringByAppendingPathComponent:newName];
+}
+
 -(void)addNewObjectToContextWithTitle:(NSString *)title withContent:(NSString *)content withImage:(NSData *) image
 {
     NSManagedObject *newNote;
@@ -93,8 +108,19 @@
     [newNote setValue:title forKey:@"title"];
     [newNote setValue:content forKey:@"content"];
     [newNote setValue:[NSDate date] forKey:@"date"];
-    [newNote setValue:image forKey:@"image"];
-    [self asyncSavingOfNSManagedObject:newNote];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+
+    // Convert to new Date Format
+    [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
+    NSString *newDate = [dateFormatter stringFromDate:[NSDate date]];
+    [self asyncSavingOfNSManagedObject:newNote withImage:image withName:newDate];
+}
+
+- (NSData *)getImageFromDocumentsWithName: (NSString *) imageName 
+{
+    NSData *pngData = [NSData dataWithContentsOfFile:[self documentsPathForFileName:imageName]];
+    return pngData;
 }
 
 #pragma mark - Search Methods

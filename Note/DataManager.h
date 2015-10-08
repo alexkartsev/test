@@ -23,11 +23,19 @@ typedef NS_ENUM(NSInteger, UYLWorldFactsSearchScope)
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 + (DataManager*)sharedManager;
+
 - (void)saveContext;
-- (void)asyncSavingOfNSManagedObject: (NSManagedObject *) aObject;
+
+- (void) asyncSavingOfNSManagedObject: (NSManagedObject *) aObject
+                            withImage: (NSData *)image
+                             withName: (NSString *) imageName;
+
 -(void)addNewObjectToContextWithTitle:(NSString *)title
                           withContent:(NSString *)content
                             withImage:(NSData *) image;
+
 - (NSArray *)searchForText:(NSString *)searchText scope:(UYLWorldFactsSearchScope)scopeOption;
+
+- (NSData *)getImageFromDocumentsWithName: (NSString *) imageName;
 
 @end

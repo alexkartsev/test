@@ -110,7 +110,7 @@ bool imageWasChanged;
 {
     if (self.detailItem)
     {
-        NSArray *itemsToShare = [[NSArray alloc]initWithObjects:[self.detailItem valueForKey:@"title"], [self.detailItem valueForKey:@"content"], [UIImage imageWithData:[self.detailItem valueForKey:@"image"]],nil];
+        NSArray *itemsToShare = [[NSArray alloc]initWithObjects:[self.detailItem valueForKey:@"noteTitle"], [self.detailItem valueForKey:@"content"], [UIImage imageWithData:[self.detailItem valueForKey:@"image"]],nil];
         UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:itemsToShare applicationActivities:nil];
         activityController.excludedActivityTypes = @[];
         [self presentViewController:activityController animated:YES completion:nil];
@@ -167,7 +167,7 @@ bool imageWasChanged;
     {
         if (self.detailItem)
         {
-                [self.detailItem setValue:self.titleTextField.text forKey:@"title"];
+                [self.detailItem setValue:self.titleTextField.text forKey:@"noteTitle"];
                 [self.detailItem setValue:self.contentTextView.text forKey:@"content"];
                 NSData *imageData = UIImagePNGRepresentation(self.imageView.image);
                 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -200,7 +200,7 @@ bool imageWasChanged;
 - (void)configureView {
     // Update the user interface for the detail item.
     if (self.detailItem) {
-        self.titleTextField.text = [[self.detailItem valueForKey:@"title"] description];
+        self.titleTextField.text = [[self.detailItem valueForKey:@"noteTitle"] description];
         self.contentTextView.text = [[self.detailItem valueForKey:@"content"] description];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];

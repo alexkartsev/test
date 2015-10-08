@@ -152,7 +152,7 @@
     {
         object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     }
-    cell.textLabel.text = [[object valueForKey:@"title"] description];
+    cell.textLabel.text = [[object valueForKey:@"noteTitle"] description];
     cell.detailTextLabel.text = [[object valueForKey:@"content"] description];
 
 }

@@ -60,6 +60,7 @@
 		117A2ABB1BC3AA40001421F1 /* NoteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NoteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		117A2ABF1BC3AA40001421F1 /* NoteUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NoteUITests.m; sourceTree = "<group>"; };
 		117A2AC11BC3AA40001421F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		11E00FF91BC7236F008F871E /* Note 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Note 2.xcdatamodel"; sourceTree = "<group>"; };
 		6D3B864599085F975DC58556 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		7787EDB3FEC356BB7996B466 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2D2A4348BE97E8BA861503F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -601,9 +602,10 @@
 		117A2A9A1BC3AA40001421F1 /* Note.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				11E00FF91BC7236F008F871E /* Note 2.xcdatamodel */,
 				117A2A9B1BC3AA40001421F1 /* Note.xcdatamodel */,
 			);
-			currentVersion = 117A2A9B1BC3AA40001421F1 /* Note.xcdatamodel */;
+			currentVersion = 11E00FF91BC7236F008F871E /* Note 2.xcdatamodel */;
 			path = Note.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

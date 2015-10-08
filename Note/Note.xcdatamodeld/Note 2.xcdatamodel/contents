@@ -3,7 +3,7 @@
     <entity name="Event">
         <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" elementID="title" syncable="YES"/>
+        <attribute name="noteTitle" optional="YES" attributeType="String" elementID="title" syncable="YES"/>
         <userInfo/>
     </entity>
     <elements>

@@ -26,9 +26,10 @@
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
     [self.imageView addGestureRecognizer:tap];
+    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareButton)];
     UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveButton)];
     UIBarButtonItem *addImageButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addImageButton)];
-    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:saveButton, addImageButton, nil]];
+    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:saveButton, shareButton,addImageButton, nil]];
     self.contentTextView.layer.borderWidth = 1.0f;
     self.contentTextView.layer.borderColor = [[UIColor grayColor] CGColor];
     UITapGestureRecognizer *touch = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchEndEditing)];
@@ -96,6 +97,21 @@
     [self.alertEditImageController addAction:deleteAction];
     [self.alertEditImageController addAction:cancel];
     
+}
+
+- (void) shareButton
+{
+    if (self.detailItem)
+    {
+        NSArray *itemsToShare = [[NSArray alloc]initWithObjects:[self.detailItem valueForKey:@"title"], [self.detailItem valueForKey:@"content"], [UIImage imageWithData:[self.detailItem valueForKey:@"image"]],nil];
+        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:itemsToShare applicationActivities:nil];
+        activityController.excludedActivityTypes = @[];
+        [self presentViewController:activityController animated:YES completion:nil];
+    }
+    else
+    {
+        [self showAlertViewWithMessage:@"Sorry, you have no saved note"];
+    }
 }
 
 - (void) myTapImageMethod

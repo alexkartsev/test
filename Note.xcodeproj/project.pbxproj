@@ -18,6 +18,8 @@
 		117A2AAA1BC3AA40001421F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 117A2AA81BC3AA40001421F1 /* LaunchScreen.storyboard */; };
 		117A2AB51BC3AA40001421F1 /* NoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 117A2AB41BC3AA40001421F1 /* NoteTests.m */; };
 		117A2AC01BC3AA40001421F1 /* NoteUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 117A2ABF1BC3AA40001421F1 /* NoteUITests.m */; };
+		119A0B751BC6B18A002C7AF9 /* Model.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 119A0B741BC6B18A002C7AF9 /* Model.xcmappingmodel */; settings = {ASSET_TAGS = (); }; };
+		119A0B781BC6B1A8002C7AF9 /* MergingNoteToNote2.m in Sources */ = {isa = PBXBuildFile; fileRef = 119A0B771BC6B1A8002C7AF9 /* MergingNoteToNote2.m */; settings = {ASSET_TAGS = (); }; };
 		A98E6D39516A2BD80F5029A1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7787EDB3FEC356BB7996B466 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +62,10 @@
 		117A2ABB1BC3AA40001421F1 /* NoteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NoteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		117A2ABF1BC3AA40001421F1 /* NoteUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NoteUITests.m; sourceTree = "<group>"; };
 		117A2AC11BC3AA40001421F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		119A0B731BC6B11E002C7AF9 /* Note 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Note 2.xcdatamodel"; sourceTree = "<group>"; };
+		119A0B741BC6B18A002C7AF9 /* Model.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Model.xcmappingmodel; sourceTree = "<group>"; };
+		119A0B761BC6B1A8002C7AF9 /* MergingNoteToNote2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MergingNoteToNote2.h; sourceTree = "<group>"; };
+		119A0B771BC6B1A8002C7AF9 /* MergingNoteToNote2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MergingNoteToNote2.m; sourceTree = "<group>"; };
 		6D3B864599085F975DC58556 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		7787EDB3FEC356BB7996B466 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2D2A4348BE97E8BA861503F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -119,6 +125,8 @@
 				117A2A971BC3AA40001421F1 /* AppDelegate.h */,
 				117A2A981BC3AA40001421F1 /* AppDelegate.m */,
 				117A2A9D1BC3AA40001421F1 /* MasterViewController.h */,
+				119A0B761BC6B1A8002C7AF9 /* MergingNoteToNote2.h */,
+				119A0B771BC6B1A8002C7AF9 /* MergingNoteToNote2.m */,
 				117A2A9E1BC3AA40001421F1 /* MasterViewController.m */,
 				117A2AA01BC3AA40001421F1 /* DetailViewController.h */,
 				117A2AA11BC3AA40001421F1 /* DetailViewController.m */,
@@ -129,6 +137,7 @@
 				117A2AA81BC3AA40001421F1 /* LaunchScreen.storyboard */,
 				117A2AAB1BC3AA40001421F1 /* Info.plist */,
 				117A2A9A1BC3AA40001421F1 /* Note.xcdatamodeld */,
+				119A0B741BC6B18A002C7AF9 /* Model.xcmappingmodel */,
 				117A2A941BC3AA40001421F1 /* Supporting Files */,
 			);
 			path = Note;
@@ -343,11 +352,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				117A2AA21BC3AA40001421F1 /* DetailViewController.m in Sources */,
+				119A0B781BC6B1A8002C7AF9 /* MergingNoteToNote2.m in Sources */,
 				11797E231BC523C300990876 /* DataManager.m in Sources */,
 				117A2A9F1BC3AA40001421F1 /* MasterViewController.m in Sources */,
 				117A2A9C1BC3AA40001421F1 /* Note.xcdatamodeld in Sources */,
 				117A2A991BC3AA40001421F1 /* AppDelegate.m in Sources */,
 				117A2A961BC3AA40001421F1 /* main.m in Sources */,
+				119A0B751BC6B18A002C7AF9 /* Model.xcmappingmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -601,9 +612,10 @@
 		117A2A9A1BC3AA40001421F1 /* Note.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				119A0B731BC6B11E002C7AF9 /* Note 2.xcdatamodel */,
 				117A2A9B1BC3AA40001421F1 /* Note.xcdatamodel */,
 			);
-			currentVersion = 117A2A9B1BC3AA40001421F1 /* Note.xcdatamodel */;
+			currentVersion = 119A0B731BC6B11E002C7AF9 /* Note 2.xcdatamodel */;
 			path = Note.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

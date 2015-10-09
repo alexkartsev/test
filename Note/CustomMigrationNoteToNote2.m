@@ -15,6 +15,7 @@
                                            manager:(NSMigrationManager *)manager
                                              error:(NSError *__autoreleasing *)error
 {
+    //save image
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     NSData *image = [sInstance valueForKey:@"image"];
     [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
@@ -24,6 +25,12 @@
     NSString *newName = [NSString stringWithFormat:@"%@.png",newDate];
     NSString *temp = [documentsPath stringByAppendingPathComponent:newName];
     [image writeToFile:temp atomically:YES];
+    
+    //title and content
+    NSManagedObject *newObject = [NSEntityDescription insertNewObjectForEntityForName:[mapping destinationEntityName] inManagedObjectContext:[manager destinationContext]];
+    [newObject setValue:[sInstance valueForKey:@"title"] forKey:@"title"];
+    [newObject setValue:[sInstance valueForKey:@"content"] forKey:@"content"];
+    [manager associateSourceInstance:sInstance withDestinationInstance:newObject forEntityMapping:mapping];
     return YES;
 }
 

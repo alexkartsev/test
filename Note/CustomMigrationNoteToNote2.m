@@ -30,6 +30,7 @@
     NSManagedObject *newObject = [NSEntityDescription insertNewObjectForEntityForName:[mapping destinationEntityName] inManagedObjectContext:[manager destinationContext]];
     [newObject setValue:[sInstance valueForKey:@"title"] forKey:@"title"];
     [newObject setValue:[sInstance valueForKey:@"content"] forKey:@"content"];
+    [newObject setValue:[sInstance valueForKey:@"date"] forKey:@"date"];
     [manager associateSourceInstance:sInstance withDestinationInstance:newObject forEntityMapping:mapping];
     return YES;
 }

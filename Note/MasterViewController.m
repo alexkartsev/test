@@ -8,6 +8,7 @@
 
 #import "MasterViewController.h"
 #import "DetailViewController.h"
+#import "MBProgressHUD.h"
 
 @interface MasterViewController () <NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating>
 
@@ -38,6 +39,23 @@
 - (void)viewWillAppear:(BOOL)animated {
     self.clearsSelectionOnViewWillAppear = self.splitViewController.isCollapsed;
     [super viewWillAppear:animated];
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    MBProgressHUD *hud =[MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Loading";
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        int summ = 0;
+        for (int i = 0;i<2000000000;i++)
+        {
+            summ=summ+1000;
+        }
+        NSLog(@"%d",summ);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hide:YES];
+        });
+    });
 }
 
 - (void)didReceiveMemoryWarning {

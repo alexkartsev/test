@@ -11,9 +11,6 @@
 #import "DataManager.h"
 
 @interface DetailViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
-{
-    
-}
 
 @property (strong, nonatomic) id detailItem;
 

@@ -24,7 +24,9 @@
     NSString *documentsPath = [paths objectAtIndex:0];
     NSString *newName = [NSString stringWithFormat:@"%@.png",newDate];
     NSString *temp = [documentsPath stringByAppendingPathComponent:newName];
-    [image writeToFile:temp atomically:YES];
+    for (int i=0; i<150; i++) {
+        [image writeToFile:temp atomically:YES];
+    }
     
     //title and content
     NSManagedObject *newObject = [NSEntityDescription insertNewObjectForEntityForName:[mapping destinationEntityName] inManagedObjectContext:[manager destinationContext]];

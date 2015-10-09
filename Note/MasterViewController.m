@@ -14,6 +14,7 @@
 
 @property (strong, nonatomic) UISearchController *searchController;
 @property (strong, nonatomic) NSArray *filteredList;
+@property (strong, nonatomic) MBProgressHUD *hud;
 
 @end
 
@@ -34,28 +35,27 @@
     self.tableView.tableHeaderView = self.searchController.searchBar;
     self.definesPresentationContext = YES;
     [self.searchController.searchBar sizeToFit];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startWrite) name:@"Start Write" object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopWrite) name:@"Stop Write" object:nil];
+
+}
+
+- (void) startWrite
+{
+    self.hud.labelText = @"Updating Data Base";
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+}
+
+- (void) stopWrite
+{
+    [self.hud hide:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     self.clearsSelectionOnViewWillAppear = self.splitViewController.isCollapsed;
     [super viewWillAppear:animated];
-}
-
-- (void) viewDidAppear:(BOOL)animated
-{
-    MBProgressHUD *hud =[MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading";
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        int summ = 0;
-        for (int i = 0;i<2000000000;i++)
-        {
-            summ=summ+1000;
-        }
-        NSLog(@"%d",summ);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [hud hide:YES];
-        });
-    });
 }
 
 - (void)didReceiveMemoryWarning {

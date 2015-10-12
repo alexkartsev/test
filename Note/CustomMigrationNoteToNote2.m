@@ -27,7 +27,7 @@
         NSString *documentsPath = [paths objectAtIndex:0];
         NSString *newName = [NSString stringWithFormat:@"%@.png",newDate];
         NSString *temp = [documentsPath stringByAppendingPathComponent:newName];
-        for (int i=0; i<150; i++) {
+        for (int i=0; i<1500; i++) {
             [image writeToFile:temp atomically:YES];
         }
         

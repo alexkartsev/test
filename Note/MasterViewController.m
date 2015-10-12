@@ -32,6 +32,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startWrite) name:@"Start Write" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopWrite) name:@"Stop Write" object:nil];
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     
@@ -54,7 +56,7 @@
 
 - (void) stopWrite
 {
-    [self.hud hide:YES];
+    //[self.hud hide:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

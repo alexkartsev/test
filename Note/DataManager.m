@@ -7,11 +7,13 @@
 //
 
 #import "DataManager.h"
+#import "MBProgressHud.h"
 
 @interface DataManager()
 
 @property (strong, nonatomic) NSFetchRequest *searchFetchRequest;
 @property (strong, nonatomic) NSArray *filteredList;
+@property (strong, nonatomic) MBProgressHUD *hud;
 
 @end
 
@@ -203,12 +205,11 @@
     if (_persistentStoreCoordinator != nil) {
         return _persistentStoreCoordinator;
     }
-    
     // Create the coordinator and store
-    
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+    [self startWrite];
     dispatch_sync(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"Start Write" object:nil];
+    
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Note.sqlite"];
     NSError *error = nil;
     NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES,
@@ -228,7 +229,7 @@
     }
         //return returnStoreCoordinator;
         });
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"Stop Write" object:nil];
+    [self stopWrite];
     return _persistentStoreCoordinator;
 }
 
@@ -276,6 +277,24 @@
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }
+    }
+}
+
+
+#pragma mark - HUD methods
+
+
+- (void) startWrite
+{
+    [self stopWrite];
+    self.hud.labelText = @"Updating Data Base";
+    self.hud = [MBProgressHUD showHUDAddedTo:[[UIApplication sharedApplication].delegate window].rootViewController.view animated:YES];
+}
+
+- (void) stopWrite
+{
+    if(self.hud) {
+        [self.hud hide:YES];
     }
 }
 

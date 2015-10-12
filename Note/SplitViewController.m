@@ -34,8 +34,6 @@ collapseSecondaryViewController:(UIViewController *)secondaryViewController
     if ([secondaryViewController isKindOfClass:[UINavigationController class]]
         && [[(UINavigationController *)secondaryViewController topViewController] isKindOfClass:[DetailViewController class]]
         && ([(DetailViewController *)[(UINavigationController *)secondaryViewController topViewController] detailItem] == nil)) {
-        
-        // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
         return YES;
         
     } else {
@@ -44,15 +42,5 @@ collapseSecondaryViewController:(UIViewController *)secondaryViewController
         
     }
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

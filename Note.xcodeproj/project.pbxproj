@@ -128,6 +128,7 @@
 		117A2A931BC3AA40001421F1 /* Note */ = {
 			isa = PBXGroup;
 			children = (
+				1182AE681BCC7606001D00EE /* Data */,
 				117A2A971BC3AA40001421F1 /* AppDelegate.h */,
 				117A2A981BC3AA40001421F1 /* AppDelegate.m */,
 				1182AE621BCBF367001D00EE /* SplitViewController.h */,
@@ -136,18 +137,12 @@
 				117A2A9E1BC3AA40001421F1 /* MasterViewController.m */,
 				117A2AA01BC3AA40001421F1 /* DetailViewController.h */,
 				117A2AA11BC3AA40001421F1 /* DetailViewController.m */,
-				11797E211BC523C300990876 /* DataManager.h */,
-				11797E221BC523C300990876 /* DataManager.m */,
-				11CE0AE71BC7B10E00D75D2D /* CustomMigrationNoteToNote2.h */,
-				11CE0AE81BC7B10E00D75D2D /* CustomMigrationNoteToNote2.m */,
 				1182AE5F1BCBE6FA001D00EE /* LoadingViewController.h */,
 				1182AE601BCBE6FA001D00EE /* LoadingViewController.m */,
 				117A2AA31BC3AA40001421F1 /* Main.storyboard */,
 				117A2AA61BC3AA40001421F1 /* Assets.xcassets */,
 				117A2AA81BC3AA40001421F1 /* LaunchScreen.storyboard */,
 				117A2AAB1BC3AA40001421F1 /* Info.plist */,
-				117A2A9A1BC3AA40001421F1 /* Note.xcdatamodeld */,
-				11CE0AE51BC7B0E400D75D2D /* Model.xcmappingmodel */,
 				117A2A941BC3AA40001421F1 /* Supporting Files */,
 			);
 			path = Note;
@@ -177,6 +172,19 @@
 				117A2AC11BC3AA40001421F1 /* Info.plist */,
 			);
 			path = NoteUITests;
+			sourceTree = "<group>";
+		};
+		1182AE681BCC7606001D00EE /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				11CE0AE71BC7B10E00D75D2D /* CustomMigrationNoteToNote2.h */,
+				11CE0AE81BC7B10E00D75D2D /* CustomMigrationNoteToNote2.m */,
+				11797E211BC523C300990876 /* DataManager.h */,
+				11797E221BC523C300990876 /* DataManager.m */,
+				117A2A9A1BC3AA40001421F1 /* Note.xcdatamodeld */,
+				11CE0AE51BC7B0E400D75D2D /* Model.xcmappingmodel */,
+			);
+			name = Data;
 			sourceTree = "<group>";
 		};
 		C43371824A91AC3F374D2E74 /* Pods */ = {

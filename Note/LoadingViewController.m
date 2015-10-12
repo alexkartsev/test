@@ -38,7 +38,15 @@
     [self.hud hide:YES];
     SplitViewController *dvc = [self.storyboard instantiateViewControllerWithIdentifier:@"splitViewController"];
     [dvc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self presentViewController:dvc animated:YES completion:nil];
+    [self.navigationController pushViewController:dvc animated:YES];
+//    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+//    SplitViewController *controller = (SplitViewController*)[mainStoryboard instantiateViewControllerWithIdentifier: @"splitViewController"];
+//    //self.window.rootViewController = controller;
+//    //UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
+//    UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
+//    navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
+//    splitViewController.delegate = self;
+
 }
 
 - (void)didReceiveMemoryWarning {

@@ -109,7 +109,7 @@
         <!--View Controller-->
         <scene sceneID="c7t-dW-etv">
             <objects>
-                <viewController id="ED3-Z0-9pn" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="loadingViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ED3-Z0-9pn" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ga1-8b-geh"/>
                         <viewControllerLayoutGuide type="bottom" id="ev8-lA-MIB"/>

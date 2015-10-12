@@ -7,6 +7,7 @@
 //
 
 #import "DataManager.h"
+#import "LoadingViewController.h"
 
 @interface DataManager()
 
@@ -210,6 +211,9 @@
     NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES,
                               NSInferMappingModelAutomaticallyOption: @YES};
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+        LoadingViewController *dvc = [mainStoryboard instantiateViewControllerWithIdentifier:@"loadingViewController"];
+        LoadingViewController *temp = [[LoadingViewController alloc]init];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"Data base need to updating" object:nil];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             NSError *error = nil;

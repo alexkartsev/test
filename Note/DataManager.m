@@ -207,6 +207,8 @@
     // Create the coordinator and store
     
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+    dispatch_sync(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Start Write" object:nil];
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Note.sqlite"];
     NSError *error = nil;
     NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES,
@@ -224,7 +226,9 @@
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
-    
+        //return returnStoreCoordinator;
+        });
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Stop Write" object:nil];
     return _persistentStoreCoordinator;
 }
 

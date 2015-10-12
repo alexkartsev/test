@@ -20,6 +20,15 @@
 
 @implementation MasterViewController
 
+- (id)init {
+    if(self  = [super init]) {
+        [self startWrite];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startWrite) name:@"Start Write" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopWrite) name:@"Stop Write" object:nil];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
@@ -35,17 +44,12 @@
     self.tableView.tableHeaderView = self.searchController.searchBar;
     self.definesPresentationContext = YES;
     [self.searchController.searchBar sizeToFit];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startWrite) name:@"Start Write" object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopWrite) name:@"Stop Write" object:nil];
-
 }
 
 - (void) startWrite
 {
     self.hud.labelText = @"Updating Data Base";
-    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.hud = [MBProgressHUD showHUDAddedTo:[[UIApplication sharedApplication].delegate window].rootViewController.view animated:YES];
 }
 
 - (void) stopWrite

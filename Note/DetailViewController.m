@@ -98,7 +98,6 @@ bool imageWasChanged;
     [self.alertAddingImageController addAction:fromGalleryAction];
     [self.alertAddingImageController addAction:fromCameraAction];
     [self.alertAddingImageController addAction:cancelAddingImage];
-    
     [self.alertEditImageController addAction:fromGalleryAction];
     [self.alertEditImageController addAction:fromCameraAction];
     [self.alertEditImageController addAction:deleteAction];

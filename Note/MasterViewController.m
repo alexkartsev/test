@@ -8,13 +8,11 @@
 
 #import "MasterViewController.h"
 #import "DetailViewController.h"
-#import "MBProgressHUD.h"
 
 @interface MasterViewController () <NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating>
 
 @property (strong, nonatomic) UISearchController *searchController;
 @property (strong, nonatomic) NSArray *filteredList;
-@property (strong, nonatomic) MBProgressHUD *hud;
 
 @end
 
@@ -23,13 +21,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startWrite) name:@"Start Write" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopWrite) name:@"Stop Write" object:nil];
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     self.searchController.searchResultsUpdater = self;
+    self.searchController.searchBar.clipsToBounds = YES;
     self.searchController.dimsBackgroundDuringPresentation = NO;
     self.searchController.searchBar.scopeButtonTitles = @[NSLocalizedString(@"Title",@"Title"),
                                                           NSLocalizedString(@"Content",@"Content")];
@@ -41,18 +38,7 @@
 
 - (void) viewDidAppear:(BOOL)animated
 {
-    
-}
-
-- (void) startWrite
-{
-    self.hud.labelText = @"Updating Data Base";
-    self.hud = [MBProgressHUD showHUDAddedTo:[[UIApplication sharedApplication].delegate window].rootViewController.view animated:YES];
-}
-
-- (void) stopWrite
-{
-    //[self.hud hide:YES];
+    [super viewDidAppear:animated];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

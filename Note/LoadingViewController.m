@@ -10,10 +10,9 @@
 #import "MBProgressHud.h"
 #import "SplitViewController.h"
 #import "DataManager.h"
+#import "MasterViewController.h"
 
 @interface LoadingViewController ()
-
-@property (strong, nonatomic) MBProgressHUD *hud;
 
 @end
 
@@ -22,9 +21,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopWrite) name:@"Data base updated" object:nil];
-    self.hud.labelText = @"Updating";
-    self.hud = [MBProgressHUD showHUDAddedTo:[[UIApplication sharedApplication].delegate window].rootViewController.view animated:YES];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     // Do any additional setup after loading the view.
+//    [self performSelector:@selector(stopWrite) withObject:nil afterDelay:3];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -35,10 +34,16 @@
 
 - (void) stopWrite
 {
-    [self.hud hide:YES];
-    SplitViewController *dvc = [self.storyboard instantiateViewControllerWithIdentifier:@"splitViewController"];
-    [dvc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self.navigationController pushViewController:dvc animated:YES];
+//    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [self performSegueWithIdentifier:@"segueToNextView" sender:self];
+//    });
+//    MasterViewController *dvc = [self.storyboard instantiateViewControllerWithIdentifier:@"masterTableViewController"];
+//    [dvc setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+//    [self.navigationController pushViewController:[[UINavigationController alloc] initWithRootViewController:dvc] animated:YES];
+    
+
+    
 //    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
 //    SplitViewController *controller = (SplitViewController*)[mainStoryboard instantiateViewControllerWithIdentifier: @"splitViewController"];
 //    //self.window.rootViewController = controller;

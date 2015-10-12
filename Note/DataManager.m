@@ -206,7 +206,9 @@
                               NSInferMappingModelAutomaticallyOption: @YES};
     NSError *error = nil;
     [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"Data base updated" object:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"Data base updated" object:nil];
+    });
 }
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {

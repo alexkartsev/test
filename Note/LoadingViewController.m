@@ -26,6 +26,11 @@
     // Do any additional setup after loading the view.
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    
+}
+
 - (void) stopWrite
 {
     [self.hud hide:YES];

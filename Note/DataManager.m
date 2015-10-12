@@ -205,18 +205,19 @@
     }
     // Create the coordinator and store
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    dispatch_sync(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Note.sqlite"];
     NSError *error = nil;
     NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES,
                               NSInferMappingModelAutomaticallyOption: @YES};
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"Data base need to updating" object:nil];
-        [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"Data base updated" object:nil];
-    }
-        //return returnStoreCoordinator;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            NSError *error = nil;
+            [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"Data base updated" object:nil];
         });
+        }
+        //return returnStoreCoordinator;
     return _persistentStoreCoordinator;
 }
 

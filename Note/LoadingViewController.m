@@ -28,9 +28,9 @@
     self.hud =  [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 //    hud.frame = CGRectMake(0, 0, 120, 143);
     
-    self.hud.mode = MBProgressHUDModeAnnularDeterminate;
+//    self.hud.mode = MBProgressHUDModeAnnularDeterminate;
     NSString *strloadingText = [NSString stringWithFormat:@"Updating Data Base"];
-    NSString *strloadingText2 = [NSString stringWithFormat:@" Please Wait.\r few seconds"];
+    NSString *strloadingText2 = [NSString stringWithFormat:@" Please wait\r few seconds"];
     self.hud.labelText = strloadingText;
     self.hud.detailsLabelText=strloadingText2;
 }

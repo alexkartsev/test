@@ -48,6 +48,10 @@
     [self.searchController.searchBar sizeToFit];
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    
+}
 - (void) startWrite
 {
     self.hud.labelText = @"Updating Data Base";

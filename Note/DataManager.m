@@ -207,7 +207,7 @@
     }
     // Create the coordinator and store
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    [self startWrite];
+    [self performSelector:@selector(startWrite) withObject:nil afterDelay:0.3];
     dispatch_sync(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
     
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Note.sqlite"];
@@ -229,7 +229,7 @@
     }
         //return returnStoreCoordinator;
         });
-    [self stopWrite];
+    [self performSelector:@selector(stopWrite) withObject:nil afterDelay:0.3];
     return _persistentStoreCoordinator;
 }
 

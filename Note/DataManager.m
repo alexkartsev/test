@@ -7,7 +7,7 @@
 //
 
 #import "DataManager.h"
-#import "LoadingViewController.h"
+//#import "LoadingViewController.h"
 
 @interface DataManager()
 
@@ -212,26 +212,15 @@
 }
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    // The persistent store coordinator for the application. This implementation creates and returns a coordinator, having added the store for the application to it.
     if (_persistentStoreCoordinator != nil) {
         return _persistentStoreCoordinator;
     }
-    // Create the coordinator and store
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Note.sqlite"];
     NSError *error = nil;
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-        //UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        //LoadingViewController *dvc = [mainStoryboard instantiateViewControllerWithIdentifier:@"loadingViewController"];
-        //LoadingViewController *temp = [[LoadingViewController alloc]init];
-//            NSError *error = nil;
-//            [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error];
-//            [[NSNotificationCenter defaultCenter] postNotificationName:@"Data base updated" object:nil];
-    }
-    else{
+    if ([_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"Data base not need to updating" object:nil];
     }
-        //return returnStoreCoordinator;
     return _persistentStoreCoordinator;
 }
 
@@ -274,8 +263,6 @@
     if (managedObjectContext != nil) {
         NSError *error = nil;
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-            // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }

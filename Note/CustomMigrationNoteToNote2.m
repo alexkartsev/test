@@ -15,9 +15,6 @@
                                            manager:(NSMigrationManager *)manager
                                              error:(NSError *__autoreleasing *)error
 {
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"Start Write" object:nil];
-//
-//    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         //save image
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         NSData *image = [sInstance valueForKey:@"image"];
@@ -37,11 +34,6 @@
         [newObject setValue:[sInstance valueForKey:@"content"] forKey:@"content"];
         [newObject setValue:[sInstance valueForKey:@"date"] forKey:@"date"];
         [manager associateSourceInstance:sInstance withDestinationInstance:newObject forEntityMapping:mapping];
-        
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [[NSNotificationCenter defaultCenter] postNotificationName:@"Stop Write" object:nil];
-//        });
-//    });
     
     return YES;
 }

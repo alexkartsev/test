@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "DetailViewController.h"
-#import "MasterViewController.h"
+//#import "MasterViewController.h"
 #import "SplitViewController.h"
 
 @interface AppDelegate () <UISplitViewControllerDelegate>
@@ -21,15 +21,6 @@ bool isDataBaseUpdated;
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
-//    UISplitViewController *controller = [];
-//    self.window.rootViewController = controller;
-    
-//    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
-//                                                             bundle: nil];
-    
-//    MyViewController *controller = (MyViewController*)[mainStoryboard
-//                                                       instantiateViewControllerWithIdentifier: @"<Controller ID>"];
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goSplitView) name:@"Data base not need to updating" object:nil];
     [[DataManager sharedManager] persistentStoreCoordinator];
     return YES;
@@ -44,6 +35,11 @@ bool isDataBaseUpdated;
     UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
     navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
     splitViewController.delegate = self;
+}
+
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

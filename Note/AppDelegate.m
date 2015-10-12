@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "DetailViewController.h"
 #import "MasterViewController.h"
+#import "SplitViewController.h"
 
 @interface AppDelegate () <UISplitViewControllerDelegate>
 
@@ -16,14 +17,38 @@
 
 @implementation AppDelegate
 
+bool isDataBaseUpdated;
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
-    UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
-    navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
-    splitViewController.delegate = self;
+//    UISplitViewController *controller = [];
+//    self.window.rootViewController = controller;
+    
+//    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+//                                                             bundle: nil];
+    
+//    MyViewController *controller = (MyViewController*)[mainStoryboard
+//                                                       instantiateViewControllerWithIdentifier: @"<Controller ID>"];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startWrite) name:@"Data base need to updating" object:nil];
+    
+    [[DataManager sharedManager] persistentStoreCoordinator];
+    
+    if (!isDataBaseUpdated) {
+        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+        SplitViewController *controller = (SplitViewController*)[mainStoryboard instantiateViewControllerWithIdentifier: @"splitViewController"];
+        self.window.rootViewController = controller;
+        UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
+        UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
+        navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
+        splitViewController.delegate = self;
+    }
     return YES;
+}
+
+-(void) startWrite
+{
+    isDataBaseUpdated = YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

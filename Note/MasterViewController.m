@@ -20,15 +20,6 @@
 
 @implementation MasterViewController
 
-- (id)init {
-    if(self  = [super init]) {
-        [self startWrite];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startWrite) name:@"Start Write" object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopWrite) name:@"Stop Write" object:nil];
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
@@ -52,6 +43,7 @@
 {
     
 }
+
 - (void) startWrite
 {
     self.hud.labelText = @"Updating Data Base";

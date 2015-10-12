@@ -30,25 +30,20 @@ bool isDataBaseUpdated;
     
 //    MyViewController *controller = (MyViewController*)[mainStoryboard
 //                                                       instantiateViewControllerWithIdentifier: @"<Controller ID>"];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startWrite) name:@"Data base need to updating" object:nil];
-    
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goSplitView) name:@"Data base not need to updating" object:nil];
     [[DataManager sharedManager] persistentStoreCoordinator];
-    
-    if (!isDataBaseUpdated) {
-        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        SplitViewController *controller = (SplitViewController*)[mainStoryboard instantiateViewControllerWithIdentifier: @"splitViewController"];
-        self.window.rootViewController = controller;
-        UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
-        UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
-        navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
-        splitViewController.delegate = self;
-    }
     return YES;
 }
 
--(void) startWrite
+- (void) goSplitView
 {
-    isDataBaseUpdated = YES;
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+    SplitViewController *controller = (SplitViewController*)[mainStoryboard instantiateViewControllerWithIdentifier: @"splitViewController"];
+    self.window.rootViewController = controller;
+    UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
+    UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
+    navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
+    splitViewController.delegate = self;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

@@ -199,6 +199,16 @@
     return _managedObjectModel;
 }
 
+- (void) updateDataBase
+{
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Note.sqlite"];
+    NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES,
+                              NSInferMappingModelAutomaticallyOption: @YES};
+    NSError *error = nil;
+    [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Data base updated" object:nil];
+}
+
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
     // The persistent store coordinator for the application. This implementation creates and returns a coordinator, having added the store for the application to it.
     if (_persistentStoreCoordinator != nil) {
@@ -208,19 +218,17 @@
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Note.sqlite"];
     NSError *error = nil;
-    NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES,
-                              NSInferMappingModelAutomaticallyOption: @YES};
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        LoadingViewController *dvc = [mainStoryboard instantiateViewControllerWithIdentifier:@"loadingViewController"];
-        LoadingViewController *temp = [[LoadingViewController alloc]init];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"Data base need to updating" object:nil];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            NSError *error = nil;
-            [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"Data base updated" object:nil];
-        });
-        }
+        //UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+        //LoadingViewController *dvc = [mainStoryboard instantiateViewControllerWithIdentifier:@"loadingViewController"];
+        //LoadingViewController *temp = [[LoadingViewController alloc]init];
+//            NSError *error = nil;
+//            [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"Data base updated" object:nil];
+    }
+    else{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"Data base not need to updating" object:nil];
+    }
         //return returnStoreCoordinator;
     return _persistentStoreCoordinator;
 }

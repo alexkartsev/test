@@ -41,4 +41,6 @@ typedef NS_ENUM(NSInteger, UYLWorldFactsSearchScope)
 
 - (void)deleteImageFromDocumentsWithName:(NSString *)imageName;
 
+- (void) updateDataBase;
+
 @end

@@ -9,6 +9,7 @@
 #import "LoadingViewController.h"
 #import "MBProgressHud.h"
 #import "SplitViewController.h"
+#import "DataManager.h"
 
 @interface LoadingViewController ()
 
@@ -28,7 +29,8 @@
 
 - (void) viewDidAppear:(BOOL)animated
 {
-    
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        [[DataManager sharedManager] updateDataBase];});
 }
 
 - (void) stopWrite

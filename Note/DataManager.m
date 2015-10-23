@@ -8,6 +8,8 @@
 
 #import "DataManager.h"
 #import <Parse/Parse.h>
+#import "Event+CoreDataProperties.h"
+#import "Event.h"
 
 @interface DataManager()
 
@@ -42,33 +44,33 @@
     return self;
 }
 
-- (void) replaceCoreDataObject:(NSManagedObject *) coreDataObject withParseObject: (PFObject *) objectFromParse
+- (void) replaceCoreDataObject:(Event *) coreDataObject withParseObject: (PFObject *) objectFromParse
 {
     [self deleteImageFromDocumentsWithName:[self makeStringFromDate:[coreDataObject valueForKey:@"date"]]];
     PFFile *image = objectFromParse[@"image"];
     NSData *imageData = [image getData];
-    [coreDataObject setValue:objectFromParse[@"title"] forKey:@"title"];
-    [coreDataObject setValue:objectFromParse[@"content"] forKey:@"content"];
-    [coreDataObject setValue:objectFromParse[@"updateDate"] forKey:@"updateDate"];
-    [coreDataObject setValue:@"notdelete" forKey:@"toDelete"];
+    coreDataObject.title = objectFromParse[@"title"];
+    coreDataObject.content = objectFromParse[@"content"];
+    coreDataObject.updateDate = objectFromParse[@"updateDate"];
+    coreDataObject.deleteNote = @"notdelete";
     NSError *error = nil;
     [self.managedObjectContext save:&error];
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         if (imageData) {
-            [imageData writeToFile:[self documentsPathForFileName:[self makeStringFromDate:[coreDataObject valueForKey:@"date"]]] atomically:YES];
+            [imageData writeToFile:[self documentsPathForFileName:[self makeStringFromDate:coreDataObject.date]] atomically:YES];
         }
     });
     
 
 }
 
-- (void) replaceParseObject:(PFObject *) parseObject withCoreDataObject: (NSManagedObject *) objectCoreData
+- (void) replaceParseObject:(PFObject *) parseObject withCoreDataObject: (Event *) objectCoreData
 {
-    parseObject[@"title"] = [objectCoreData valueForKey:@"title"];
-    parseObject[@"content"] = [objectCoreData valueForKey:@"content"];
-    parseObject[@"createDate"] = [objectCoreData valueForKey:@"date"];
-    parseObject[@"updateDate"] = [objectCoreData valueForKey:@"updateDate"];
-    NSData *data = [self getImageFromDocumentsWithName:[self makeStringFromDate:[objectCoreData valueForKey:@"date"]]];
+    parseObject[@"title"] = objectCoreData.title;
+    parseObject[@"content"] = objectCoreData.content;
+    parseObject[@"createDate"] = objectCoreData.date;
+    parseObject[@"updateDate"] = objectCoreData.updateDate;
+    NSData *data = [self getImageFromDocumentsWithName:[self makeStringFromDate:objectCoreData.date ]];
     if (data) {
         PFFile *file = [PFFile fileWithName:@"image.png" data:data];
         [file saveInBackground];
@@ -81,9 +83,9 @@
     [parseObject saveInBackground];
 }
 
-- (void) removeObjectFromCoreDataAnywhere:(NSManagedObject *) objectFromCoreData
+- (void) removeObjectFromCoreDataAnywhere:(Event *) objectFromCoreData
 {
-    [self removeObjectFromParseWithCreateDate:[objectFromCoreData valueForKey:@"date"]];
+    [self removeObjectFromParseWithCreateDate:objectFromCoreData.date];
     [self.managedObjectContext deleteObject:objectFromCoreData];
     [self deleteImageFromDocumentsWithName:[self makeStringFromDate:[objectFromCoreData valueForKey:@"date"]]];
     NSError *error = nil;
@@ -102,8 +104,8 @@
     
     NSError *error = nil;
     NSMutableArray *array = [[NSMutableArray alloc] initWithArray:[self.managedObjectContext executeFetchRequest:fetchRequest error:&error]];
-    for (NSManagedObject *object in array) {
-        if ([[object valueForKey:@"toDelete"] isEqualToString:@"delete"])
+    for (Event *object in array) {
+        if ([object.deleteNote isEqualToString:@"delete"])
         {
             [self removeObjectFromCoreDataAnywhere:object];
         }
@@ -116,19 +118,17 @@
         if (!error) {
             NSMutableArray *arrayFromParse = [[NSMutableArray alloc] initWithArray:objects];
             for (int i=0;i<arrayFromCoreData.count;i++) {
-                NSManagedObject *objectFromCoreData = [arrayFromCoreData objectAtIndex:i];
+                Event *objectFromCoreData = [arrayFromCoreData objectAtIndex:i];
                 for (int j=0;j<arrayFromParse.count;j++)
                 {
                     PFObject *objectFromParse = [arrayFromParse objectAtIndex:j];
-                    if ([[self makeStringFromDate:[objectFromCoreData valueForKey:@"updateDate"]]  isEqualToString:[self makeStringFromDate:[objectFromParse valueForKey:@"updateDate"]]]) {
-                        
+                    if ([[self makeStringFromDate:objectFromCoreData.updateDate]  isEqualToString:[self makeStringFromDate:[objectFromParse valueForKey:@"updateDate"]]]) {
                         [indexesForCoreData addIndex:i];
                         [indexesForParse addIndex:j];
                         break;
                     }
-                    [objectFromCoreData setValue:@YES forKey:@"BolleanAtr"];
-                    if ([[self makeStringFromDate:[objectFromCoreData valueForKey:@"date"]]  isEqualToString:[self makeStringFromDate:[objectFromParse valueForKey:@"createDate"]]]) {
-                        if([[objectFromCoreData valueForKey:@"updateDate"] compare:[objectFromParse valueForKey:@"updateDate"]] == NSOrderedDescending)
+                    if ([[self makeStringFromDate:objectFromCoreData.date]  isEqualToString:[self makeStringFromDate:[objectFromParse valueForKey:@"createDate"]]]) {
+                        if([objectFromCoreData.updateDate compare:[objectFromParse valueForKey:@"updateDate"]] == NSOrderedDescending)
                         {
                             [self replaceParseObject:objectFromParse withCoreDataObject:objectFromCoreData];
                         }
@@ -148,12 +148,12 @@
             //if we have data at CoreData, but haven't this data at Parse
             if (arrayFromCoreData.count) {
                 for (int i = 0; i<arrayFromCoreData.count; i++) {
-                    NSManagedObject *objectFromCoreData = [arrayFromCoreData objectAtIndex:i];
+                    Event *objectFromCoreData = [arrayFromCoreData objectAtIndex:i];
                         PFObject *objectForParse = [PFObject objectWithClassName:@"note"];
-                        objectForParse[@"title"] = [objectFromCoreData valueForKey:@"title"];
-                        objectForParse[@"content"] = [objectFromCoreData valueForKey:@"content"];
-                        objectForParse[@"createDate"] = [objectFromCoreData valueForKey:@"date"];
-                        objectForParse[@"updateDate"] = [objectFromCoreData valueForKey:@"updateDate"];
+                        objectForParse[@"title"] = objectFromCoreData.title;
+                        objectForParse[@"content"] = objectFromCoreData.content;
+                        objectForParse[@"createDate"] = objectFromCoreData.date valueForKey:@"date"];
+                        objectForParse[@"updateDate"] = objectFromCoreData.updateDate ;
                         NSData *data = [self getImageFromDocumentsWithName:[self makeStringFromDate:[objectFromCoreData valueForKey:@"date"]]];
                         PFFile *file = [PFFile fileWithName:@"image.png" data:data];
                         [file saveInBackground];
@@ -232,7 +232,7 @@
     [newNote setValue:content forKey:@"content"];
     [newNote setValue:createDate forKey:@"date"];
     [newNote setValue:updateDate forKey:@"updateDate"];
-    [newNote setValue:@"notdelete" forKey:@"toDelete"];
+    [newNote setValue:@"notdelete" forKey:@"deleteNote"];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     
     // Convert to new Date Format
@@ -258,7 +258,7 @@
     [newNote setValue:content forKey:@"content"];
     [newNote setValue:[NSDate date] forKey:@"date"];
     [newNote setValue:[NSDate date] forKey:@"updateDate"];
-    [newNote setValue:@"notdelete" forKey:@"toDelete"];
+    [newNote setValue:@"notdelete" forKey:@"deleteNote"];
     //[newNote setValue:@YES forKey:@"deleted"];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 

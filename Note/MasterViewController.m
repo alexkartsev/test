@@ -225,7 +225,7 @@
             newNote = [self.fetchedResultsController objectAtIndexPath:indexPath];
             //NSNumber *yesNum = [NSNumber numberWithBool:YES];
 
-            [newNote setValue:@"delete" forKey:@"toDelete"];
+            [newNote setValue:@"delete" forKey:@"deleteNote"];
             NSError *error = nil;
             self.wantToRemoveRow = TRUE;
             if (![context save:&error]) {
@@ -265,7 +265,7 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:[[DataManager sharedManager] managedObjectContext]];
     [fetchRequest setEntity:entity];
     NSString *predicateFormat1 = @"%K contains[c] %@";
-    NSString *searchAttribute1 = @"toDelete";
+    NSString *searchAttribute1 = @"deleteNote";
     NSPredicate *predicate1 = [NSPredicate predicateWithFormat:predicateFormat1, searchAttribute1, @"notdelete"];
     [fetchRequest setPredicate:predicate1];
     // Edit the sort key as appropriate.

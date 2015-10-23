@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "Reachability.h"
 
 @class DetailViewController;
 
@@ -15,6 +16,9 @@
 
 @property (strong, nonatomic) DetailViewController *detailViewController;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (assign, nonatomic) BOOL isInternetConnection;
+@property (strong, nonatomic) Reachability *internetReachable;
+@property (assign, nonatomic) BOOL wantToRemoveRow;
 
 @end
 

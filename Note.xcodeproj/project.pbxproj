@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1108B9831BD7DC1A00E1602B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1108B9821BD7DC1900E1602B /* SystemConfiguration.framework */; };
 		11797E231BC523C300990876 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11797E221BC523C300990876 /* DataManager.m */; settings = {ASSET_TAGS = (); }; };
 		117A2A961BC3AA40001421F1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 117A2A951BC3AA40001421F1 /* main.m */; };
 		117A2A991BC3AA40001421F1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 117A2A981BC3AA40001421F1 /* AppDelegate.m */; };
@@ -22,7 +23,7 @@
 		1182AE641BCBF367001D00EE /* SplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AE631BCBF367001D00EE /* SplitViewController.m */; settings = {ASSET_TAGS = (); }; };
 		11CE0AE61BC7B0E400D75D2D /* Model.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 11CE0AE51BC7B0E400D75D2D /* Model.xcmappingmodel */; settings = {ASSET_TAGS = (); }; };
 		11CE0AE91BC7B10E00D75D2D /* CustomMigrationNoteToNote2.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CE0AE81BC7B10E00D75D2D /* CustomMigrationNoteToNote2.m */; settings = {ASSET_TAGS = (); }; };
-		A98E6D39516A2BD80F5029A1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7787EDB3FEC356BB7996B466 /* libPods.a */; };
+		E437696B1730E148A61BAEAD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E326984AC5660D842AE36DEC /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1108B9821BD7DC1900E1602B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		11797E211BC523C300990876 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		11797E221BC523C300990876 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		117A2A911BC3AA40001421F1 /* Note.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Note.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -73,8 +75,8 @@
 		11CE0AE71BC7B10E00D75D2D /* CustomMigrationNoteToNote2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomMigrationNoteToNote2.h; sourceTree = "<group>"; };
 		11CE0AE81BC7B10E00D75D2D /* CustomMigrationNoteToNote2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomMigrationNoteToNote2.m; sourceTree = "<group>"; };
 		6D3B864599085F975DC58556 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		7787EDB3FEC356BB7996B466 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2D2A4348BE97E8BA861503F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		E326984AC5660D842AE36DEC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +84,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A98E6D39516A2BD80F5029A1 /* libPods.a in Frameworks */,
+				1108B9831BD7DC1A00E1602B /* SystemConfiguration.framework in Frameworks */,
+				E437696B1730E148A61BAEAD /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,7 +202,8 @@
 		E4B23994405E8CC72C07CE59 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7787EDB3FEC356BB7996B466 /* libPods.a */,
+				1108B9821BD7DC1900E1602B /* SystemConfiguration.framework */,
+				E326984AC5660D842AE36DEC /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -518,6 +522,10 @@
 			baseConfigurationReference = 6D3B864599085F975DC58556 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -536,6 +544,10 @@
 			baseConfigurationReference = D2D2A4348BE97E8BA861503F /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Note/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Alex-Kartsev.Note";

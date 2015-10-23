@@ -8,11 +8,13 @@
 
 #import "MasterViewController.h"
 #import "DetailViewController.h"
+#import "MBProgressHud.h"
 
 @interface MasterViewController () <NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating>
 
 @property (strong, nonatomic) UISearchController *searchController;
 @property (strong, nonatomic) NSArray *filteredList;
+@property (strong,nonatomic) MBProgressHUD * hud;
 
 @end
 
@@ -20,8 +22,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopActivityIndicator) name:@"Data not need to Parse" object:nil];
     // Do any additional setup after loading the view, typically from a nib.
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
+    //self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
@@ -34,6 +37,74 @@
     self.tableView.tableHeaderView = self.searchController.searchBar;
     self.definesPresentationContext = YES;
     [self.searchController.searchBar sizeToFit];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNetworkChange) name:kReachabilityChangedNotification object:nil];
+    
+    self.internetReachable = [Reachability reachabilityForInternetConnection];
+    [self.internetReachable startNotifier];
+    [self handleNetworkChange];
+}
+
+- (IBAction)updateAction:(id)sender {
+    if (self.isInternetConnection)
+    {
+        [self startActivityIndicator];
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            [[DataManager sharedManager] syncWithParse];
+        });
+    }
+    else
+    {
+        [self showAlertViewWithMessage:@"Sorry, internet connection not available"];
+    }
+}
+
+- (void) showAlertViewWithMessage:(NSString *) message
+{
+    UIAlertController *alertController = [UIAlertController  alertControllerWithTitle:@"Attention!"  message:message  preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }]];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void) handleNetworkChange
+{
+    NetworkStatus remoteHostStatus = [self.internetReachable currentReachabilityStatus];
+    
+    if(remoteHostStatus == NotReachable)
+    {
+        self.isInternetConnection = NO;
+        NSLog(@"no internet connection");
+    }
+    else
+    {
+        if (!self.isInternetConnection) {
+            [self startActivityIndicator];
+            self.isInternetConnection = YES;
+            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                [[DataManager sharedManager] syncWithParse];
+            });
+
+        }
+        NSLog(@"there is internet connection");
+    }
+}
+
+- (void) startActivityIndicator
+{
+    self.hud =  [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    NSString *strloadingText = [NSString stringWithFormat:@"Updating Data Base"];
+    NSString *strloadingText2 = [NSString stringWithFormat:@" Please wait\r a few seconds"];
+    self.hud.labelText = strloadingText;
+    self.hud.detailsLabelText=strloadingText2;
+}
+
+- (void) stopActivityIndicator
+{
+    [self.hud hide:YES];
+    [self.tableView reloadData];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -42,6 +113,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [self.tableView reloadData];
     self.clearsSelectionOnViewWillAppear = self.splitViewController.isCollapsed;
     [super viewWillAppear:animated];
 }
@@ -133,15 +205,34 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-        [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
-        NSString *newDate = [dateFormatter stringFromDate:[[self.fetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"date"]];
-        [[DataManager sharedManager] deleteImageFromDocumentsWithName:newDate];
-        NSError *error = nil;
-        if (![context save:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
+        if (self.isInternetConnection)
+        {
+            [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
+            NSString *newDate = [dateFormatter stringFromDate:[[self.fetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"date"]];
+            [[DataManager sharedManager] removeObjectFromParseWithCreateDate:[[self.fetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"date"]];
+            [[DataManager sharedManager] deleteImageFromDocumentsWithName:newDate];
+            NSError *error = nil;
+            if (![context save:&error]) {
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                abort();
+            }
+        }
+        else
+        {
+            NSManagedObject *newNote;
+            newNote = [self.fetchedResultsController objectAtIndexPath:indexPath];
+            //NSNumber *yesNum = [NSNumber numberWithBool:YES];
+
+            [newNote setValue:@"delete" forKey:@"toDelete"];
+            NSError *error = nil;
+            self.wantToRemoveRow = TRUE;
+            if (![context save:&error]) {
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                abort();
+            }
+            //[self.tableView reloadData];
         }
     }
 }
@@ -168,12 +259,15 @@
     if (_fetchedResultsController != nil) {
         return _fetchedResultsController;
     }
-    
+    [NSFetchedResultsController deleteCacheWithName:@"Master"];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:[[DataManager sharedManager] managedObjectContext]];
     [fetchRequest setEntity:entity];
-    
+    NSString *predicateFormat1 = @"%K contains[c] %@";
+    NSString *searchAttribute1 = @"toDelete";
+    NSPredicate *predicate1 = [NSPredicate predicateWithFormat:predicateFormat1, searchAttribute1, @"notdelete"];
+    [fetchRequest setPredicate:predicate1];
     // Edit the sort key as appropriate.
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
@@ -231,7 +325,14 @@
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            //[self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            
+            if (self.wantToRemoveRow) {
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                self.wantToRemoveRow = FALSE;
+            }
+            
+            
             break;
             
         case NSFetchedResultsChangeMove:

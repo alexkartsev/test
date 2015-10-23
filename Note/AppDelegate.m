@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "DetailViewController.h"
 #import "SplitViewController.h"
+#import <Parse/Parse.h>
 
 @interface AppDelegate () <UISplitViewControllerDelegate>
 
@@ -20,8 +21,11 @@ bool isDataBaseUpdated;
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goSplitView) name:@"Data base not need to updating" object:nil];
+    [Parse setApplicationId:@"QnvFE4a2wVRCH63cHA8TInTy2TsimRFljNtcdJd9"
+                  clientKey:@"IMKtNgqj9Gom8gcQp0shwXYDmLXchDRkP4KYqUZ2"];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goSplitView) name:@"Data base not need to updating" object:nil];
     [[DataManager sharedManager] persistentStoreCoordinator];
+    //[[DataManager sharedManager] testInternetConnection];
     return YES;
 }
 

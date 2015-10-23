@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "CustomMigrationNoteToNote2.h"
+#import "Reachability.h"
 
 @interface DataManager : NSObject
 
@@ -18,7 +19,6 @@ typedef NS_ENUM(NSInteger, UYLWorldFactsSearchScope)
     searchScopeContent = 1
 };
 
-@property (readonly, strong, nonatomic) NSManagedObjectContext *childManagedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
@@ -26,10 +26,6 @@ typedef NS_ENUM(NSInteger, UYLWorldFactsSearchScope)
 + (DataManager*)sharedManager;
 
 - (void)saveContext;
-
-- (void)asyncSavingOfNSManagedObject: (NSManagedObject *) aObject
-                            withImage: (NSData *)image
-                             withName: (NSString *) imageName;
 
 -(void)addNewObjectToContextWithTitle:(NSString *)title
                           withContent:(NSString *)content
@@ -42,5 +38,11 @@ typedef NS_ENUM(NSInteger, UYLWorldFactsSearchScope)
 - (void)deleteImageFromDocumentsWithName:(NSString *)imageName;
 
 - (void) updateDataBase;
+
+- (void) syncWithParse;
+
+- (void) removeObjectFromParseWithCreateDate:(NSDate *) date;
+
+- (NSString *)documentsPathForFileName:(NSString *)name;
 
 @end

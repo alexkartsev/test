@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1107A4371BDE12D90008D8E8 /* Event+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107A4341BDE12D90008D8E8 /* Event+CoreDataProperties.m */; settings = {ASSET_TAGS = (); }; };
+		1107A4381BDE12D90008D8E8 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 1107A4361BDE12D90008D8E8 /* Event.m */; settings = {ASSET_TAGS = (); }; };
 		1108B9831BD7DC1A00E1602B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1108B9821BD7DC1900E1602B /* SystemConfiguration.framework */; };
 		11797E231BC523C300990876 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11797E221BC523C300990876 /* DataManager.m */; settings = {ASSET_TAGS = (); }; };
 		117A2A961BC3AA40001421F1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 117A2A951BC3AA40001421F1 /* main.m */; };
@@ -21,8 +23,6 @@
 		117A2AC01BC3AA40001421F1 /* NoteUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 117A2ABF1BC3AA40001421F1 /* NoteUITests.m */; };
 		1182AE611BCBE6FA001D00EE /* LoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AE601BCBE6FA001D00EE /* LoadingViewController.m */; settings = {ASSET_TAGS = (); }; };
 		1182AE641BCBF367001D00EE /* SplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AE631BCBF367001D00EE /* SplitViewController.m */; settings = {ASSET_TAGS = (); }; };
-		11BFC9081BDA605E0008F004 /* Event+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 11BFC9051BDA605E0008F004 /* Event+CoreDataProperties.m */; settings = {ASSET_TAGS = (); }; };
-		11BFC9091BDA605E0008F004 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 11BFC9071BDA605E0008F004 /* Event.m */; settings = {ASSET_TAGS = (); }; };
 		11CE0AE61BC7B0E400D75D2D /* Model.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 11CE0AE51BC7B0E400D75D2D /* Model.xcmappingmodel */; settings = {ASSET_TAGS = (); }; };
 		11CE0AE91BC7B10E00D75D2D /* CustomMigrationNoteToNote2.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CE0AE81BC7B10E00D75D2D /* CustomMigrationNoteToNote2.m */; settings = {ASSET_TAGS = (); }; };
 		E437696B1730E148A61BAEAD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E326984AC5660D842AE36DEC /* libPods.a */; };
@@ -46,6 +46,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1107A4331BDE12D90008D8E8 /* Event+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Event+CoreDataProperties.h"; sourceTree = "<group>"; };
+		1107A4341BDE12D90008D8E8 /* Event+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Event+CoreDataProperties.m"; sourceTree = "<group>"; };
+		1107A4351BDE12D90008D8E8 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
+		1107A4361BDE12D90008D8E8 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		1108B9821BD7DC1900E1602B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		11797E211BC523C300990876 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		11797E221BC523C300990876 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
@@ -72,10 +76,6 @@
 		1182AE601BCBE6FA001D00EE /* LoadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingViewController.m; sourceTree = "<group>"; };
 		1182AE621BCBF367001D00EE /* SplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplitViewController.h; sourceTree = "<group>"; };
 		1182AE631BCBF367001D00EE /* SplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplitViewController.m; sourceTree = "<group>"; };
-		11BFC9041BDA605E0008F004 /* Event+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Event+CoreDataProperties.h"; sourceTree = "<group>"; };
-		11BFC9051BDA605E0008F004 /* Event+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Event+CoreDataProperties.m"; sourceTree = "<group>"; };
-		11BFC9061BDA605E0008F004 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
-		11BFC9071BDA605E0008F004 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		11CE0AE41BC7B04900D75D2D /* Note 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Note 2.xcdatamodel"; sourceTree = "<group>"; };
 		11CE0AE51BC7B0E400D75D2D /* Model.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Model.xcmappingmodel; sourceTree = "<group>"; };
 		11CE0AE71BC7B10E00D75D2D /* CustomMigrationNoteToNote2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomMigrationNoteToNote2.h; sourceTree = "<group>"; };
@@ -186,10 +186,10 @@
 		1182AE681BCC7606001D00EE /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				11BFC9041BDA605E0008F004 /* Event+CoreDataProperties.h */,
-				11BFC9051BDA605E0008F004 /* Event+CoreDataProperties.m */,
-				11BFC9061BDA605E0008F004 /* Event.h */,
-				11BFC9071BDA605E0008F004 /* Event.m */,
+				1107A4331BDE12D90008D8E8 /* Event+CoreDataProperties.h */,
+				1107A4341BDE12D90008D8E8 /* Event+CoreDataProperties.m */,
+				1107A4351BDE12D90008D8E8 /* Event.h */,
+				1107A4361BDE12D90008D8E8 /* Event.m */,
 				11CE0AE71BC7B10E00D75D2D /* CustomMigrationNoteToNote2.h */,
 				11CE0AE81BC7B10E00D75D2D /* CustomMigrationNoteToNote2.m */,
 				11797E211BC523C300990876 /* DataManager.h */,
@@ -383,13 +383,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11BFC9091BDA605E0008F004 /* Event.m in Sources */,
+				1107A4381BDE12D90008D8E8 /* Event.m in Sources */,
 				117A2AA21BC3AA40001421F1 /* DetailViewController.m in Sources */,
 				1182AE611BCBE6FA001D00EE /* LoadingViewController.m in Sources */,
 				11797E231BC523C300990876 /* DataManager.m in Sources */,
 				117A2A9F1BC3AA40001421F1 /* MasterViewController.m in Sources */,
 				117A2A9C1BC3AA40001421F1 /* Note.xcdatamodeld in Sources */,
-				11BFC9081BDA605E0008F004 /* Event+CoreDataProperties.m in Sources */,
+				1107A4371BDE12D90008D8E8 /* Event+CoreDataProperties.m in Sources */,
 				117A2A991BC3AA40001421F1 /* AppDelegate.m in Sources */,
 				11CE0AE91BC7B10E00D75D2D /* CustomMigrationNoteToNote2.m in Sources */,
 				1182AE641BCBF367001D00EE /* SplitViewController.m in Sources */,

@@ -3,12 +3,13 @@
     <entity name="Event" representedClassName="Event">
         <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="deleteNote" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="needToDelete" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
         <userInfo/>
     </entity>
     <elements>
-        <element name="Event" positionX="261" positionY="189" width="128" height="120"/>
+        <element name="Event" positionX="261" positionY="189" width="128" height="135"/>
     </elements>
 </model>

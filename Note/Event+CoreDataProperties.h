@@ -2,7 +2,7 @@
 //  Event+CoreDataProperties.h
 //  
 //
-//  Created by Александр Карцев on 10/23/15.
+//  Created by Александр Карцев on 10/26/15.
 //
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -19,7 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSDate *date;
 @property (nullable, nonatomic, retain) NSString *title;
 @property (nullable, nonatomic, retain) NSDate *updateDate;
-@property (nullable, nonatomic, retain) NSString *deleteNote;
+@property (nullable, nonatomic, retain) NSNumber *needToDelete;
+@property (nullable, nonatomic, retain) NSString *imageName;
 
 @end
 

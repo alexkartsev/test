@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "CustomMigrationNoteToNote2.h"
 #import "Reachability.h"
+#import "Event.h"
 
 @interface DataManager : NSObject
 
@@ -23,19 +24,19 @@ typedef NS_ENUM(NSInteger, UYLWorldFactsSearchScope)
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-+ (DataManager*)sharedManager;
++ (DataManager*) sharedManager;
 
-- (void)saveContext;
+- (void) saveContext;
 
--(void)addNewObjectToContextWithTitle:(NSString *)title
+- (void) addNewObjectToContextWithTitle:(NSString *)title
                           withContent:(NSString *)content
                             withImage:(NSData *) image;
 
-- (NSArray *)searchForText:(NSString *)searchText scope:(UYLWorldFactsSearchScope)scopeOption;
+- (NSArray *) searchForText:(NSString *)searchText scope:(UYLWorldFactsSearchScope)scopeOption;
 
-- (NSData *)getImageFromDocumentsWithName: (NSString *) imageName;
+- (NSData *) getImageFromDocumentsWithName: (NSString *) imageName;
 
-- (void)deleteImageFromDocumentsWithName:(NSString *)imageName;
+- (void) deleteImageFromDocumentsWithName:(NSString *)imageName;
 
 - (void) updateDataBase;
 
@@ -43,6 +44,11 @@ typedef NS_ENUM(NSInteger, UYLWorldFactsSearchScope)
 
 - (void) removeObjectFromParseWithCreateDate:(NSDate *) date;
 
-- (NSString *)documentsPathForFileName:(NSString *)name;
+- (NSString *) documentsPathForFileName:(NSString *)name;
+
+- (void) saveDetailItem: (Event *)detailItem
+              withTitle:(NSString *)title
+            withContent:(NSString *) content
+          withImageData: (NSData *) imageData;
 
 @end

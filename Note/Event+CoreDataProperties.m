@@ -2,7 +2,7 @@
 //  Event+CoreDataProperties.m
 //  
 //
-//  Created by Александр Карцев on 10/23/15.
+//  Created by Александр Карцев on 10/26/15.
 //
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -17,6 +17,7 @@
 @dynamic date;
 @dynamic title;
 @dynamic updateDate;
-@dynamic deleteNote;
+@dynamic needToDelete;
+@dynamic imageName;
 
 @end

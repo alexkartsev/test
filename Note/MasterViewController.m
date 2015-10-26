@@ -9,6 +9,7 @@
 #import "MasterViewController.h"
 #import "DetailViewController.h"
 #import "MBProgressHud.h"
+#import "Event.h"
 
 @interface MasterViewController () <NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating>
 
@@ -143,7 +144,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+        Event *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
         DetailViewController *controller = (DetailViewController *)[[segue destinationViewController] topViewController];
         [controller setDetailItem:object];
         controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
@@ -221,11 +222,10 @@
         }
         else
         {
-            NSManagedObject *newNote;
+            Event *newNote;
             newNote = [self.fetchedResultsController objectAtIndexPath:indexPath];
             //NSNumber *yesNum = [NSNumber numberWithBool:YES];
-
-            [newNote setValue:@"delete" forKey:@"deleteNote"];
+            newNote.needToDelete = @YES;
             NSError *error = nil;
             self.wantToRemoveRow = TRUE;
             if (![context save:&error]) {
@@ -238,7 +238,7 @@
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    NSManagedObject *object;
+    Event *object;
     if (self.searchController.active)
     {
         object = [self.filteredList objectAtIndex:indexPath.row];
@@ -247,8 +247,8 @@
     {
         object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     }
-    cell.textLabel.text = [[object valueForKey:@"title"] description];
-    cell.detailTextLabel.text = [[object valueForKey:@"content"] description];
+    cell.textLabel.text = object.title;
+    cell.detailTextLabel.text = object.content;
 
 }
 
@@ -264,9 +264,9 @@
     // Edit the entity name as appropriate.
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:[[DataManager sharedManager] managedObjectContext]];
     [fetchRequest setEntity:entity];
-    NSString *predicateFormat1 = @"%K contains[c] %@";
-    NSString *searchAttribute1 = @"deleteNote";
-    NSPredicate *predicate1 = [NSPredicate predicateWithFormat:predicateFormat1, searchAttribute1, @"notdelete"];
+    NSString *predicateFormat1 = @"%K == %@";
+    NSString *searchAttribute1 = @"needToDelete";
+    NSPredicate *predicate1 = [NSPredicate predicateWithFormat:predicateFormat1, searchAttribute1, @NO];
     [fetchRequest setPredicate:predicate1];
     // Edit the sort key as appropriate.
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];

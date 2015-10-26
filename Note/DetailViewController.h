@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import "DataManager.h"
+#import "Event.h"
 
 @interface DetailViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
-@property (strong, nonatomic) id detailItem;
+@property (strong, nonatomic) Event *detailItem;
 
 @end
 

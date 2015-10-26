@@ -46,10 +46,7 @@ bool imageWasChanged;
                                  handler:^(UIAlertAction * action)
                                  {
                                      self.imageView.image=nil;
-                                     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                                     [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
-                                     NSString *newDate = [dateFormatter stringFromDate:[self.detailItem valueForKey:@"date"]];
-                                     [[DataManager sharedManager] deleteImageFromDocumentsWithName:newDate];
+                                     [[DataManager sharedManager] deleteImageFromDocumentsWithName:self.detailItem.imageName];
                                      [self.alertEditImageController dismissViewControllerAnimated:YES completion:nil];
                                  }];
     
@@ -109,7 +106,7 @@ bool imageWasChanged;
 {
     if (self.detailItem)
     {
-        NSArray *itemsToShare = [[NSArray alloc]initWithObjects:[self.detailItem valueForKey:@"title"], [self.detailItem valueForKey:@"content"], [UIImage imageWithData:[self.detailItem valueForKey:@"image"]],nil];
+        NSArray *itemsToShare = [[NSArray alloc]initWithObjects:self.detailItem.title, self.detailItem.content, [UIImage imageWithData:[[DataManager sharedManager] getImageFromDocumentsWithName:self.detailItem.imageName] ],nil];
         UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:itemsToShare applicationActivities:nil];
         activityController.excludedActivityTypes = @[];
         [self presentViewController:activityController animated:YES completion:nil];
@@ -166,19 +163,8 @@ bool imageWasChanged;
     {
         if (self.detailItem)
         {
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
-            NSString *newDate = [dateFormatter stringFromDate:[self.detailItem valueForKey:@"date"]];
-            [[DataManager sharedManager] deleteImageFromDocumentsWithName:newDate];
             NSData *imageData = UIImagePNGRepresentation(self.imageView.image);
-            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-                if (imageData) {
-                    [imageData writeToFile:[[DataManager sharedManager] documentsPathForFileName:newDate] atomically:YES];
-                }
-            });
-            [self.detailItem setValue:self.titleTextField.text forKey:@"title"];
-            [self.detailItem setValue:self.contentTextView.text forKey:@"content"];
-            [self.detailItem setValue:[NSDate date] forKey:@"updateDate"];
+            [[DataManager sharedManager] saveDetailItem:self.detailItem withTitle:self.titleTextField.text withContent:self.contentTextView.text withImageData:imageData];
             [self.navigationController.navigationController popViewControllerAnimated:YES];
         }
         else
@@ -205,12 +191,9 @@ bool imageWasChanged;
 - (void)configureView {
     // Update the user interface for the detail item.
     if (self.detailItem) {
-        self.titleTextField.text = [[self.detailItem valueForKey:@"title"] description];
-        self.contentTextView.text = [[self.detailItem valueForKey:@"content"] description];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
-        NSString *newDate = [dateFormatter stringFromDate:[self.detailItem valueForKey:@"date"]];
-        self.imageView.image = [UIImage imageWithData:[[DataManager sharedManager] getImageFromDocumentsWithName:newDate]];
+        self.titleTextField.text = self.detailItem.title;
+        self.contentTextView.text = self.detailItem.content;
+        self.imageView.image = [UIImage imageWithData:[[DataManager sharedManager] getImageFromDocumentsWithName:self.detailItem.imageName]];
     }
 }
 
